@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, Compass, Trophy, User, BarChart3, Users, Home, Settings, GraduationCap, Shield } from "lucide-react";
+import { BookOpen, Compass, Trophy, User, BarChart3, Users, Home, Settings, GraduationCap, Shield, Medal, FileText, UserCheck, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLocale } from "@/lib/locale-context";
 import { LanguageToggle } from "@/components/landing/language-toggle";
@@ -22,11 +22,15 @@ export function SidebarNav({ role }: SidebarNavProps) {
       { label: t("sidebar.journey"), icon: Compass, href: "/app/student" },
       { label: t("sidebar.myBooks"), icon: BookOpen, href: "/app/student/books" },
       { label: t("sidebar.missions"), icon: Trophy, href: "/app/student/missions" },
+      { label: "Timer", icon: Clock, href: "/app/student/timer" },
       { label: t("sidebar.profile"), icon: User, href: "/app/student/profile" },
     ],
     teacher: [
       { label: t("sidebar.dashboard"), icon: BarChart3, href: "/app/teacher" },
       { label: t("sidebar.classes"), icon: Users, href: "/app/teacher/classes" },
+      { label: "Alunos", icon: UserCheck, href: "/app/teacher/students" },
+      { label: "Exercícios", icon: FileText, href: "/app/teacher/exercises" },
+      { label: "Olimpíadas", icon: Medal, href: "/app/teacher/olympics" },
       { label: t("sidebar.missions"), icon: Trophy, href: "/app/teacher/missions" },
       { label: t("sidebar.library"), icon: BookOpen, href: "/app/teacher/library" },
     ],

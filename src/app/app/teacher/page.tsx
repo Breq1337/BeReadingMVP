@@ -15,6 +15,9 @@ import {
   Sparkles,
   Clock,
   Target,
+  Medal,
+  FileText,
+  UserCheck,
 } from "lucide-react";
 import { AnimatedProgressRing } from "@/components/ui/animated-illustrations";
 import Link from "next/link";
@@ -234,7 +237,7 @@ export default function TeacherDashboard() {
               </div>
               <div className="w-28 shrink-0">
                 <div className="flex items-center justify-between text-xs mb-1">
-                  <span className="text-muted-foreground">{student.progress}%</span>
+                  <span className="text-muted-foreground">{Math.round((student.currentChapter / 23) * 100)}%</span>
                 </div>
                 <div className="w-full bg-secondary rounded-full h-2 overflow-hidden">
                   <motion.div
@@ -246,7 +249,7 @@ export default function TeacherDashboard() {
                         : "bg-warm"
                     }`}
                     initial={{ width: 0 }}
-                    animate={{ width: `${student.progress}%` }}
+                    animate={{ width: `${Math.round((student.currentChapter / 23) * 100)}%` }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
                   />
                 </div>
@@ -254,6 +257,30 @@ export default function TeacherDashboard() {
             </div>
           ))}
         </div>
+      </motion.div>
+
+      {/* Quick access to new features */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.32 }}
+        className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6"
+      >
+        <Link href="/app/teacher/students" className="bg-card rounded-2xl border border-border/60 p-5 hover:shadow-md transition-all group">
+          <UserCheck className="w-5 h-5 text-primary mb-2 group-hover:scale-110 transition-transform" />
+          <h3 className="text-sm font-semibold">Análise de Alunos</h3>
+          <p className="text-[10px] text-muted-foreground">Performance individual detalhada</p>
+        </Link>
+        <Link href="/app/teacher/exercises" className="bg-card rounded-2xl border border-border/60 p-5 hover:shadow-md transition-all group">
+          <FileText className="w-5 h-5 text-warm mb-2 group-hover:scale-110 transition-transform" />
+          <h3 className="text-sm font-semibold">Exercícios</h3>
+          <p className="text-[10px] text-muted-foreground">Criar, enviar e corrigir</p>
+        </Link>
+        <Link href="/app/teacher/olympics" className="bg-card rounded-2xl border border-border/60 p-5 hover:shadow-md transition-all group">
+          <Medal className="w-5 h-5 text-gold-foreground mb-2 group-hover:scale-110 transition-transform" />
+          <h3 className="text-sm font-semibold">Olimpíadas Literárias</h3>
+          <p className="text-[10px] text-muted-foreground">Competições entre turmas</p>
+        </Link>
       </motion.div>
 
       {/* AI Insights card */}

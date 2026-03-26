@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, Compass, Trophy, User, BarChart3, Users, Home, Shield, GraduationCap } from "lucide-react";
+import { BookOpen, Compass, Trophy, User, BarChart3, Users, Home, Shield, GraduationCap, Medal, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLocale } from "@/lib/locale-context";
 
@@ -22,8 +22,8 @@ export function MobileNav({ role }: { role: Role }) {
     teacher: [
       { label: t("sidebar.dashboard"), icon: BarChart3, href: "/app/teacher" },
       { label: t("sidebar.classes"), icon: Users, href: "/app/teacher/classes" },
-      { label: t("sidebar.missions"), icon: Trophy, href: "/app/teacher/missions" },
-      { label: t("sidebar.library"), icon: BookOpen, href: "/app/teacher/library" },
+      { label: "Exercícios", icon: FileText, href: "/app/teacher/exercises" },
+      { label: "Olimpíadas", icon: Medal, href: "/app/teacher/olympics" },
     ],
     family: [
       { label: t("sidebar.overview"), icon: Home, href: "/app/family" },
