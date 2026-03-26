@@ -12,7 +12,11 @@ import {
   AlertCircle,
   CheckCircle2,
   ArrowRight,
+  Sparkles,
+  Clock,
+  Target,
 } from "lucide-react";
+import { AnimatedProgressRing } from "@/components/ui/animated-illustrations";
 import Link from "next/link";
 
 export default function TeacherDashboard() {
@@ -20,9 +24,12 @@ export default function TeacherDashboard() {
   const avgEngagement = Math.round(
     currentTeacher.classes.reduce((s, c) => s + c.engagementScore, 0) / currentTeacher.classes.length
   );
+  const avgProgress = Math.round(
+    currentTeacher.classes.reduce((s, c) => s + c.averageProgress, 0) / currentTeacher.classes.length
+  );
 
   return (
-    <div className="p-6 lg:p-10 max-w-5xl">
+    <div className="p-6 lg:p-10 max-w-6xl">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -30,100 +37,183 @@ export default function TeacherDashboard() {
         transition={{ duration: 0.5 }}
         className="mb-8"
       >
-        <p className="text-sm text-muted-foreground mb-1">Good morning,</p>
-        <h1 className="text-3xl font-bold tracking-tight" style={{ fontFamily: "var(--font-heading)" }}>
+        <p className="text-sm text-muted-foreground mb-1">Bom dia,</p>
+        <h1
+          className="text-3xl font-bold tracking-tight"
+          style={{ fontFamily: "var(--font-heading)" }}
+        >
           {currentTeacher.name}
         </h1>
         <p className="text-sm text-muted-foreground mt-1">{currentTeacher.school}</p>
       </motion.div>
 
-      {/* Overview stats */}
+      {/* Top stats with visual impact */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.1 }}
-        className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
+        className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8"
       >
-        {[
-          { icon: Users, label: "Total Students", value: totalStudents, color: "text-primary" },
-          { icon: BookOpen, label: "Active Classes", value: currentTeacher.classes.length, color: "text-warm" },
-          { icon: TrendingUp, label: "Avg Engagement", value: `${avgEngagement}%`, color: "text-success" },
-          { icon: BarChart3, label: "Missions Created", value: 24, color: "text-gold-foreground" },
-        ].map((stat) => (
-          <div key={stat.label} className="bg-card rounded-2xl border border-border/60 p-5">
-            <stat.icon className={`w-5 h-5 ${stat.color} mb-3`} />
-            <div className="text-2xl font-bold">{stat.value}</div>
-            <p className="text-xs text-muted-foreground mt-0.5">{stat.label}</p>
-          </div>
-        ))}
+        <div className="bg-card rounded-2xl border border-border/60 p-5">
+          <Users className="w-5 h-5 text-primary mb-3" />
+          <div className="text-2xl font-bold">{totalStudents}</div>
+          <p className="text-xs text-muted-foreground">Total de Alunos</p>
+        </div>
+        <div className="bg-card rounded-2xl border border-border/60 p-5">
+          <BookOpen className="w-5 h-5 text-warm mb-3" />
+          <div className="text-2xl font-bold">{currentTeacher.classes.length}</div>
+          <p className="text-xs text-muted-foreground">Turmas Ativas</p>
+        </div>
+        <div className="bg-card rounded-2xl border border-border/60 p-5">
+          <TrendingUp className="w-5 h-5 text-success mb-3" />
+          <div className="text-2xl font-bold">{avgEngagement}%</div>
+          <p className="text-xs text-muted-foreground">Engajamento Médio</p>
+        </div>
+        <div className="bg-card rounded-2xl border border-border/60 p-5">
+          <Target className="w-5 h-5 text-gold-foreground mb-3" />
+          <div className="text-2xl font-bold">24</div>
+          <p className="text-xs text-muted-foreground">Missões Criadas</p>
+        </div>
+        <div className="bg-card rounded-2xl border border-border/60 p-5">
+          <Sparkles className="w-5 h-5 text-warm mb-3" />
+          <div className="text-2xl font-bold">156</div>
+          <p className="text-xs text-muted-foreground">Missões IA Geradas</p>
+        </div>
       </motion.div>
 
-      {/* Classes */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className="mb-8"
-      >
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold">My Classes</h2>
-          <Link href="/app/teacher/classes" className="text-xs text-warm flex items-center gap-1 hover:underline">
-            View All <ArrowRight className="w-3 h-3" />
-          </Link>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {currentTeacher.classes.map((cls) => (
-            <div
-              key={cls.id}
-              className="bg-card rounded-2xl border border-border/60 p-5 hover:shadow-md transition-shadow"
-            >
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-semibold">{cls.name}</h3>
-                <Badge
-                  variant="secondary"
-                  className={`text-[10px] ${
-                    cls.engagementScore >= 85
-                      ? "bg-success/10 text-success"
-                      : cls.engagementScore >= 70
-                      ? "bg-warm/10 text-warm"
-                      : "bg-destructive/10 text-destructive"
-                  }`}
-                >
-                  {cls.engagementScore}% engaged
-                </Badge>
+      {/* Two-column: Engagement ring + Class list */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        {/* Engagement overview */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="bg-card rounded-2xl border border-border/60 p-6 flex flex-col items-center justify-center"
+        >
+          <h3 className="text-sm font-semibold mb-4">Engajamento Geral</h3>
+          <AnimatedProgressRing progress={avgEngagement} size={140} />
+          <div className="flex items-center gap-4 mt-4">
+            <div className="text-center">
+              <div className="text-lg font-bold text-success">
+                {classStudents.filter((s) => s.status === "ahead").length}
               </div>
-              <p className="text-xs text-muted-foreground mb-3">
-                {cls.studentCount} students · {cls.activeBook}
-              </p>
-              <div className="mb-1.5">
-                <div className="flex items-center justify-between text-xs mb-1">
-                  <span className="text-muted-foreground">Avg Progress</span>
-                  <span className="font-medium">{cls.averageProgress}%</span>
-                </div>
-                <Progress value={cls.averageProgress} className="h-1.5" />
-              </div>
+              <p className="text-[10px] text-muted-foreground">Adiantados</p>
             </div>
-          ))}
-        </div>
-      </motion.div>
+            <div className="w-px h-8 bg-border" />
+            <div className="text-center">
+              <div className="text-lg font-bold">
+                {classStudents.filter((s) => s.status === "on-track").length}
+              </div>
+              <p className="text-[10px] text-muted-foreground">No Ritmo</p>
+            </div>
+            <div className="w-px h-8 bg-border" />
+            <div className="text-center">
+              <div className="text-lg font-bold text-destructive">
+                {classStudents.filter((s) => s.status === "behind").length}
+              </div>
+              <p className="text-[10px] text-muted-foreground">Atrasados</p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Classes */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25 }}
+          className="lg:col-span-2"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold">Minhas Turmas</h2>
+            <Link
+              href="/app/teacher/classes"
+              className="text-xs text-warm flex items-center gap-1 hover:underline"
+            >
+              Ver Todas <ArrowRight className="w-3 h-3" />
+            </Link>
+          </div>
+          <div className="space-y-3">
+            {currentTeacher.classes.map((cls) => (
+              <div
+                key={cls.id}
+                className="bg-card rounded-2xl border border-border/60 p-5 hover:shadow-md transition-shadow"
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <div>
+                    <h3 className="text-sm font-semibold">{cls.name}</h3>
+                    <p className="text-xs text-muted-foreground">
+                      {cls.studentCount} alunos · {cls.activeBook}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Badge
+                      variant="secondary"
+                      className={`text-[10px] ${
+                        cls.engagementScore >= 85
+                          ? "bg-success/10 text-success"
+                          : cls.engagementScore >= 70
+                          ? "bg-warm/10 text-warm"
+                          : "bg-destructive/10 text-destructive"
+                      }`}
+                    >
+                      {cls.engagementScore}% engajados
+                    </Badge>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="flex-1">
+                    <Progress value={cls.averageProgress} className="h-2" />
+                  </div>
+                  <span className="text-xs font-medium w-10 text-right">
+                    {cls.averageProgress}%
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
 
       {/* Students needing attention */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.3 }}
-        className="bg-card rounded-2xl border border-border/60 p-6"
+        transition={{ delay: 0.3 }}
+        className="bg-card rounded-2xl border border-border/60 p-6 mb-6"
       >
-        <h2 className="text-lg font-semibold mb-1">Class 7A — Student Overview</h2>
-        <p className="text-xs text-muted-foreground mb-5">The Giver · 28 students</p>
+        <div className="flex items-center justify-between mb-5">
+          <div>
+            <h2 className="text-lg font-semibold">Turma 7A — Visão dos Alunos</h2>
+            <p className="text-xs text-muted-foreground">O Doador de Memórias · 28 alunos</p>
+          </div>
+          <div className="flex items-center gap-2 text-xs">
+            <span className="flex items-center gap-1 text-success">
+              <div className="w-2 h-2 rounded-full bg-success" /> Adiantado
+            </span>
+            <span className="flex items-center gap-1">
+              <div className="w-2 h-2 rounded-full bg-warm" /> No Ritmo
+            </span>
+            <span className="flex items-center gap-1 text-destructive">
+              <div className="w-2 h-2 rounded-full bg-destructive" /> Atrasado
+            </span>
+          </div>
+        </div>
 
-        <div className="space-y-3">
+        <div className="space-y-2">
           {classStudents.map((student) => (
             <div
               key={student.id}
               className="flex items-center gap-4 p-3 rounded-xl hover:bg-secondary/50 transition-colors"
             >
-              <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-xs font-semibold text-primary shrink-0">
+              <div
+                className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold shrink-0 ${
+                  student.status === "ahead"
+                    ? "bg-success/10 text-success"
+                    : student.status === "behind"
+                    ? "bg-destructive/10 text-destructive"
+                    : "bg-primary/10 text-primary"
+                }`}
+              >
                 {student.avatar}
               </div>
               <div className="flex-1 min-w-0">
@@ -136,20 +226,63 @@ export default function TeacherDashboard() {
                     <CheckCircle2 className="w-3.5 h-3.5 text-success" />
                   )}
                 </div>
-                <div className="flex items-center gap-3 text-xs text-muted-foreground mt-0.5">
-                  <span>{student.xp} XP</span>
-                  <span>{student.streak}d streak</span>
-                  <span>{student.missionsCompleted} missions</span>
+                <div className="flex items-center gap-3 text-[10px] text-muted-foreground mt-0.5">
+                  <span>🔥 {student.streak}d</span>
+                  <span>⚡ {student.xp} XP</span>
+                  <span>🎯 {student.missionsCompleted} missões</span>
                 </div>
               </div>
-              <div className="w-24 shrink-0">
+              <div className="w-28 shrink-0">
                 <div className="flex items-center justify-between text-xs mb-1">
                   <span className="text-muted-foreground">{student.progress}%</span>
                 </div>
-                <Progress value={student.progress} className="h-1.5" />
+                <div className="w-full bg-secondary rounded-full h-2 overflow-hidden">
+                  <motion.div
+                    className={`h-full rounded-full ${
+                      student.status === "ahead"
+                        ? "bg-success"
+                        : student.status === "behind"
+                        ? "bg-destructive"
+                        : "bg-warm"
+                    }`}
+                    initial={{ width: 0 }}
+                    animate={{ width: `${student.progress}%` }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                  />
+                </div>
               </div>
             </div>
           ))}
+        </div>
+      </motion.div>
+
+      {/* AI Insights card */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.35 }}
+        className="bg-gradient-to-r from-warm/5 to-gold/5 rounded-2xl border border-warm/20 p-6"
+      >
+        <div className="flex items-center gap-3 mb-3">
+          <Sparkles className="w-5 h-5 text-warm" />
+          <h3 className="text-sm font-semibold">Insights IA</h3>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="bg-card/80 rounded-xl p-4">
+            <p className="text-xs text-muted-foreground mb-1">Alunos que precisam de atenção</p>
+            <p className="text-sm font-semibold text-destructive">Pedro Santos, Gabriel Oliveira</p>
+            <p className="text-[10px] text-muted-foreground mt-1">Sem streak ativo e abaixo de 50% de progresso</p>
+          </div>
+          <div className="bg-card/80 rounded-xl p-4">
+            <p className="text-xs text-muted-foreground mb-1">Destaques da semana</p>
+            <p className="text-sm font-semibold text-success">Maria Silva, Lucas Pereira</p>
+            <p className="text-[10px] text-muted-foreground mt-1">Streaks acima de 8 dias e +3 missões completas</p>
+          </div>
+          <div className="bg-card/80 rounded-xl p-4">
+            <p className="text-xs text-muted-foreground mb-1">Sugestão</p>
+            <p className="text-sm font-semibold">Criar discussão Cap. 15</p>
+            <p className="text-[10px] text-muted-foreground mt-1">62% da turma já passou do capítulo 14</p>
+          </div>
         </div>
       </motion.div>
     </div>
