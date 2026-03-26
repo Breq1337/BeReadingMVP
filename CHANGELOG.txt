@@ -71,9 +71,33 @@ O QUE FOI FEITO
     - Client configurado em src/lib/supabase.ts
     - .env.local criado (precisa da anon key)
 
-11. ESTRUTURA
-    - 18 rotas no total
-    - Componentes reutilizaveis (BookSearch, DailyQuote, SidebarNav, MobileNav)
+11. INTEGRACAO GEMINI AI (NOVO!)
+    - API Route: /api/generate-questions
+    - Usa Google Gemini 2.0 Flash para gerar questoes personalizadas
+    - 4 tipos por capitulo: checkpoint (quiz), reflexao, desafio criativo, discussao
+    - Personalizado por: nome do aluno, nivel de leitura, respostas anteriores
+    - Prompt em PT-BR otimizado para alunos de 6o ao 9o ano
+    - Componente interativo AIMissionGenerator com:
+      * Quiz com alternativas e feedback instantaneo
+      * Textarea para reflexoes/desafios
+      * Animacao de XP ao completar
+      * Estado de loading com cerebro IA animado
+
+12. SVGs ANIMADOS (NOVO!)
+    - AnimatedBook: livro com paginas virando (Framer Motion path animation)
+    - AnimatedFlame: chama de streak com gradiente animado
+    - AnimatedProgressRing: anel de progresso com gradiente warm/gold
+    - AnimatedBrain: cerebro com conexoes neurais pulsantes (usado no loading da IA)
+    - Todas as ilustracoes sao SVG inline (zero dependencia externa)
+
+13. DASHBOARDS REDESENHADOS (NOVO!)
+    - Student: stats com animacoes, anel de XP, chama de streak, AI missions
+    - Teacher: anel de engajamento, cards de insights IA, indicadores por aluno
+    - Todos com gradientes, micro-interacoes e hierarquia visual premium
+
+14. ESTRUTURA
+    - 19 rotas + 1 API route (20 total)
+    - Componentes reutilizaveis (BookSearch, DailyQuote, AIMissionGenerator, SidebarNav, MobileNav)
     - Mock data layer com interfaces TypeScript (migravel para Supabase)
     - Build limpo, zero erros
 
@@ -108,5 +132,6 @@ STACK FINAL
 - Framer Motion
 - Lucide React
 - @supabase/supabase-js
+- @google/generative-ai (Gemini 2.0 Flash)
 - Open Library API (gratuita, sem auth)
 - Quotable API (gratuita, sem auth)
