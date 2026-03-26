@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BeReading — Where Books Come Alive
 
-## Getting Started
+The premium reading engagement platform for private schools. BeReading transforms physical books into interactive reading journeys with missions, progress tracking, and elegant gamification — designed for 6th-9th grade.
 
-First, run the development server:
+## Product Vision
+
+BeReading adds a smart digital layer to physical reading. Students read real books and engage through the app — completing missions, earning XP, building streaks, and leveling up. Teachers assign books with zero friction. Parents follow along without hovering. Schools measure reading culture impact.
+
+**Not** a generic LMS. **Not** a toy. A premium product schools actually want to pilot.
+
+## Stack
+
+- **Next.js 16** (App Router)
+- **TypeScript**
+- **Tailwind CSS 4** + shadcn/ui
+- **Framer Motion** (premium animations)
+- **Lucide React** (icons)
+- Mock data layer structured for Supabase migration
+
+## How to Run
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Key Routes
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Route | Description |
+|-------|-------------|
+| `/` | Premium landing page |
+| `/app/student` | Student journey — reading progress, missions, XP |
+| `/app/student/books` | Book library and current reading |
+| `/app/student/missions` | Mission timeline with checkpoints |
+| `/app/student/profile` | Personal profile and badge collection |
+| `/app/teacher` | Teacher dashboard — class overview |
+| `/app/teacher/classes` | Class management |
+| `/app/teacher/missions` | Mission creation and library |
+| `/app/teacher/library` | Book library for assignment |
+| `/app/family` | Family view — child's progress |
+| `/app/family/activity` | Activity timeline |
+| `/app/admin` | School overview dashboard |
+| `/app/admin/classes` | All classes performance |
+| `/app/admin/settings` | School settings |
 
-## Learn More
+## Modules
 
-To learn more about Next.js, take a look at the following resources:
+### Landing Page
+- Hero with live product preview
+- Features grid (6 core features)
+- How it Works (3-step flow)
+- Audience cards (teacher, student, family, school)
+- Pricing (Pilot / School / Network)
+- CTA section + Footer
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Student Experience
+- Reading journey with current book progress
+- XP, levels, streaks, badges
+- Mission timeline (checkpoints, reflections, challenges, discussions)
+- Personal profile and badge collection
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Teacher Experience
+- Class overview with engagement scores
+- Student progress monitoring (ahead/on-track/behind indicators)
+- Mission library with creation flow
+- Book library with assignment capability
 
-## Deploy on Vercel
+### Family Experience
+- Child's reading overview
+- Weekly reading bar chart
+- Recent activity timeline
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Admin / School
+- School-wide metrics
+- Class performance breakdown
+- Top books ranking
+- Settings management
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Design Language
+
+- Warm literary palette (amber/gold accents, deep navy, cream surfaces)
+- Playfair Display headings + Inter body text
+- Premium card-based layouts with Framer Motion
+- Glass morphism navigation
+- Responsive (mobile bottom nav + desktop sidebar)
+- Role switcher for demo navigation
+
+## Next Steps
+
+1. Supabase integration (Auth + PostgreSQL)
+2. Mission completion interactive flow
+3. Real-time progress updates
+4. Teacher mission builder
+5. Family email notifications
+6. School onboarding flow
+7. Analytics deep-dive
+8. Production deployment
+
+## Monetization
+
+- **Pilot**: Free 30 days, 1 class
+- **School**: R$ 12/student/month
+- **Network**: Custom pricing for school groups

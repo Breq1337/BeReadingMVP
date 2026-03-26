@@ -1,0 +1,112 @@
+BeReading MVP — Changelog / Documentacao
+=========================================
+
+DATA: 2026-03-26
+AUTOR: Claude Code (assistente de desenvolvimento)
+
+O QUE FOI FEITO
+===============
+
+1. PROJETO CRIADO
+   - Next.js 16 + TypeScript + Tailwind CSS 4 + shadcn/ui + Framer Motion
+   - Estrutura de pastas organizada por role (student, teacher, family, admin)
+   - Design system premium com paleta literaria (amber/gold + navy + cream)
+
+2. LANDING PAGE (PT-BR com toggle para EN)
+   - Hero com preview do produto
+   - Features (6 funcionalidades core)
+   - Como Funciona (3 passos)
+   - Cards por audiencia (professor, aluno, familia, escola)
+   - Pricing (Piloto gratis / Escola R$12/aluno / Rede sob consulta)
+   - CTA section + Footer
+
+3. INTERNACIONALIZACAO (i18n)
+   - Sistema completo de traducao PT-BR / EN
+   - Toggle de idioma no navbar e sidebar
+   - Todas as strings da landing e do app traduzidas
+   - PT-BR como idioma padrao
+
+4. EXPERIENCIA DO ALUNO
+   - Dashboard com jornada (XP, streak, nivel, progresso do livro)
+   - Citacao diaria via API (Quotable API com fallback local)
+   - Meus Livros com livro atual e biblioteca
+   - Timeline de missoes (checkpoint, reflexao, desafio, discussao)
+   - Perfil com colecao de badges
+
+5. EXPERIENCIA DO PROFESSOR
+   - Dashboard com visao geral das turmas
+   - Overview de alunos com indicadores (adiantado/no ritmo/atrasado)
+   - Gestao de turmas
+   - Biblioteca de missoes
+   - BUSCA REAL DE LIVROS via Open Library API (nao mockado!)
+
+6. EXPERIENCIA DA FAMILIA
+   - Overview do progresso do filho
+   - Grafico semanal de leitura
+   - Timeline de atividade recente
+
+7. EXPERIENCIA DO ADMIN
+   - Metricas da escola (alunos, turmas, engajamento, sessao media)
+   - Desempenho por turma com indicadores visuais
+   - Ranking de livros mais usados
+   - Pagina de configuracoes
+
+8. DESIGN & UX
+   - Ilustracoes SVG customizadas (BookStack, ReadingPerson, GrowthChart, Connection)
+   - Animacoes Framer Motion em todas as paginas
+   - Glass morphism no navbar
+   - Responsivo (sidebar desktop + bottom nav mobile)
+   - Troca de papel (role switcher) para navegacao demo
+   - Paleta premium: warm amber, gold, deep navy, cream
+
+9. APIS CONSUMIDAS (REAIS, NAO MOCK)
+   - Open Library API: busca de livros, capas, autores, ISBN
+   - Quotable API: citacoes diarias sobre leitura/educacao (com fallback)
+
+10. SUPABASE
+    - Arquivo de migracao SQL pronto (supabase-migration.sql)
+    - 14 tabelas: schools, profiles, classes, books, missions, progress, stats, badges, etc.
+    - RLS policies basicas configuradas
+    - Badges seed data em PT-BR
+    - Client configurado em src/lib/supabase.ts
+    - .env.local criado (precisa da anon key)
+
+11. ESTRUTURA
+    - 18 rotas no total
+    - Componentes reutilizaveis (BookSearch, DailyQuote, SidebarNav, MobileNav)
+    - Mock data layer com interfaces TypeScript (migravel para Supabase)
+    - Build limpo, zero erros
+
+O QUE FALTA (depende do usuario)
+================================
+
+1. SUPABASE ANON KEY
+   - Ir no dashboard Supabase > Settings > API
+   - Copiar a "anon public" key
+   - Colar no .env.local no lugar de PLACEHOLDER_NEED_ANON_KEY
+
+2. RODAR MIGRACAO SQL
+   - Abrir SQL Editor no Supabase
+   - Colar conteudo do supabase-migration.sql
+   - Executar
+
+3. DEPLOY VERCEL
+   - Configurar variaveis de ambiente no Vercel
+   - NEXT_PUBLIC_SUPABASE_URL e NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+4. CONTEUDO REAL
+   - Capas de livros reais (Open Library ja fornece)
+   - Missoes reais por livro
+   - Dados da escola
+
+STACK FINAL
+===========
+- Next.js 16.2.1 (App Router + Turbopack)
+- TypeScript 5
+- Tailwind CSS 4
+- shadcn/ui
+- Framer Motion
+- Lucide React
+- @supabase/supabase-js
+- Open Library API (gratuita, sem auth)
+- Quotable API (gratuita, sem auth)
