@@ -3,40 +3,43 @@
 import { motion } from "framer-motion";
 import { adminData } from "@/lib/mock-data";
 import { Shield, Bell, Palette, Globe } from "lucide-react";
-
-const settings = [
-  {
-    icon: Shield,
-    title: "School Profile",
-    description: "Manage school name, logo, and contact information",
-    action: "Edit",
-  },
-  {
-    icon: Bell,
-    title: "Notifications",
-    description: "Configure engagement alerts and weekly report emails",
-    action: "Configure",
-  },
-  {
-    icon: Palette,
-    title: "Branding",
-    description: "Customize colors and logo for your school's BeReading portal",
-    action: "Customize",
-  },
-  {
-    icon: Globe,
-    title: "Integrations",
-    description: "Connect with your school's existing systems (coming soon)",
-    action: "View",
-  },
-];
+import { useLocale } from "@/lib/locale-context";
 
 export default function AdminSettings() {
+  const { t } = useLocale();
+
+  const settings = [
+    {
+      icon: Shield,
+      titleKey: "app.schoolProfile" as const,
+      descKey: "app.schoolProfileDesc" as const,
+      actionKey: "app.edit" as const,
+    },
+    {
+      icon: Bell,
+      titleKey: "app.notifications" as const,
+      descKey: "app.notificationsDesc" as const,
+      actionKey: "app.configure" as const,
+    },
+    {
+      icon: Palette,
+      titleKey: "app.branding" as const,
+      descKey: "app.brandingDesc" as const,
+      actionKey: "app.customize" as const,
+    },
+    {
+      icon: Globe,
+      titleKey: "app.integrations" as const,
+      descKey: "app.integrationsDesc" as const,
+      actionKey: "app.view" as const,
+    },
+  ];
+
   return (
     <div className="p-6 lg:p-10 max-w-4xl">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight mb-2" style={{ fontFamily: "var(--font-heading)" }}>
-          Settings
+          {t("app.settings")}
         </h1>
         <p className="text-sm text-muted-foreground">{adminData.schoolName}</p>
       </motion.div>
@@ -44,7 +47,7 @@ export default function AdminSettings() {
       <div className="space-y-4">
         {settings.map((setting, i) => (
           <motion.div
-            key={setting.title}
+            key={setting.titleKey}
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.06 }}
@@ -54,11 +57,11 @@ export default function AdminSettings() {
               <setting.icon className="w-6 h-6 text-primary" />
             </div>
             <div className="flex-1">
-              <h3 className="text-sm font-semibold">{setting.title}</h3>
-              <p className="text-xs text-muted-foreground">{setting.description}</p>
+              <h3 className="text-sm font-semibold">{t(setting.titleKey)}</h3>
+              <p className="text-xs text-muted-foreground">{t(setting.descKey)}</p>
             </div>
             <button className="text-xs font-medium text-warm hover:underline shrink-0">
-              {setting.action}
+              {t(setting.actionKey)}
             </button>
           </motion.div>
         ))}

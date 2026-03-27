@@ -9,6 +9,7 @@ import { DailyQuote } from "@/components/app/daily-quote";
 import { AIMissionGenerator } from "@/components/app/ai-mission-generator";
 import { AnimatedFlame, AnimatedProgressRing, AnimatedBook } from "@/components/ui/animated-illustrations";
 import Link from "next/link";
+import { useLocale } from "@/lib/locale-context";
 
 const currentBook = books.find((b) => b.id === currentStudent.currentBookId)!;
 const bookMissions = missions.filter((m) => m.bookId === currentStudent.currentBookId);
@@ -20,6 +21,8 @@ const xpForNextLevel = (currentStudent.level + 1) * 200;
 const xpProgress = Math.round((currentStudent.xp / xpForNextLevel) * 100);
 
 export default function StudentJourney() {
+  const { t } = useLocale();
+
   return (
     <div className="p-6 lg:p-10 max-w-5xl">
       {/* Header with animated book */}
@@ -30,7 +33,7 @@ export default function StudentJourney() {
         className="flex items-center justify-between mb-8"
       >
         <div>
-          <p className="text-sm text-muted-foreground mb-1">Bem-vindo(a) de volta,</p>
+          <p className="text-sm text-muted-foreground mb-1">{t("app.welcomeBack")}</p>
           <h1
             className="text-3xl font-bold tracking-tight"
             style={{ fontFamily: "var(--font-heading)" }}
@@ -71,7 +74,7 @@ export default function StudentJourney() {
             <Star className="w-6 h-6" />
             <span className="text-3xl font-bold">Nv.{currentStudent.level}</span>
           </motion.div>
-          <p className="text-xs text-muted-foreground">Nível Leitor</p>
+          <p className="text-xs text-muted-foreground">{t("app.readerLevel")}</p>
         </div>
 
         {/* Books completed */}
@@ -80,7 +83,7 @@ export default function StudentJourney() {
             <BookOpen className="w-6 h-6" />
             <span className="text-3xl font-bold">{currentStudent.booksCompleted}</span>
           </div>
-          <p className="text-xs text-muted-foreground">Livros Concluídos</p>
+          <p className="text-xs text-muted-foreground">{t("app.booksFinished")}</p>
         </div>
       </motion.div>
 
@@ -93,7 +96,7 @@ export default function StudentJourney() {
       >
         <div className="bg-gradient-to-r from-primary/5 via-warm/5 to-gold/5 p-6">
           <p className="text-xs text-muted-foreground uppercase tracking-wider mb-4">
-            📖 Lendo Agora
+            📖 {t("app.currentlyReading")}
           </p>
           <div className="flex items-start gap-5">
             <div className="w-20 h-28 rounded-xl bg-gradient-to-br from-warm/30 to-gold/20 border border-warm/20 flex items-center justify-center text-4xl shadow-lg shadow-warm/10 shrink-0">
@@ -107,7 +110,7 @@ export default function StudentJourney() {
                 {currentBook.title}
               </h2>
               <p className="text-sm text-muted-foreground mb-1">
-                por {currentBook.author}
+                {t("app.by")} {currentBook.author}
               </p>
               <div className="flex items-center gap-2 mb-4">
                 <Badge variant="secondary" className="text-xs">
@@ -131,7 +134,7 @@ export default function StudentJourney() {
                 {/* Chapter markers */}
                 <div className="flex items-center justify-between mt-2">
                   <span className="text-xs text-muted-foreground">
-                    Capítulo {currentStudent.currentChapter} de{" "}
+                    {t("app.chapter")} {currentStudent.currentChapter} {t("app.of")}{" "}
                     {currentBook.totalChapters}
                   </span>
                   <span className="text-xs font-semibold text-warm">
@@ -183,7 +186,7 @@ export default function StudentJourney() {
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-gold" />
               <span className="text-xs text-muted-foreground uppercase tracking-wider">
-                Próxima Missão Manual
+                {t("app.nextManualMission")}
               </span>
             </div>
             <span className="text-xs bg-gold/15 text-gold-foreground px-2.5 py-1 rounded-full font-medium">
@@ -199,7 +202,7 @@ export default function StudentJourney() {
               {nextMission.type}
             </Badge>
             <span className="text-xs text-muted-foreground">
-              Capítulo {nextMission.chapter}
+              {t("app.chapter")} {nextMission.chapter}
             </span>
           </div>
         </motion.div>
@@ -215,13 +218,13 @@ export default function StudentJourney() {
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-sm font-semibold flex items-center gap-2">
             <Trophy className="w-4 h-4 text-warm" />
-            Progresso das Missões
+            {t("app.missionProgress")}
           </h3>
           <Link
             href="/app/student/missions"
             className="text-xs text-warm flex items-center gap-1 hover:underline"
           >
-            Ver Todas <ArrowRight className="w-3 h-3" />
+            {t("app.viewAll")} <ArrowRight className="w-3 h-3" />
           </Link>
         </div>
         <div className="space-y-3">
@@ -248,7 +251,7 @@ export default function StudentJourney() {
                 </span>
               </div>
               <span className="text-xs text-muted-foreground shrink-0">
-                Cap. {mission.chapter}
+                {t("app.cap")} {mission.chapter}
               </span>
               <span className="text-xs text-gold-foreground shrink-0">
                 +{mission.xpReward}
@@ -265,7 +268,7 @@ export default function StudentJourney() {
         transition={{ duration: 0.5, delay: 0.5 }}
         className="bg-card rounded-2xl border border-border/60 p-6"
       >
-        <h3 className="text-sm font-semibold mb-4">Suas Badges</h3>
+        <h3 className="text-sm font-semibold mb-4">{t("app.yourBadges")}</h3>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {currentStudent.badges.map((badge) => (
             <motion.div

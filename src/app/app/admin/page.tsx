@@ -12,13 +12,16 @@ import {
   BarChart3,
   Clock,
 } from "lucide-react";
+import { useLocale } from "@/lib/locale-context";
 
 export default function AdminOverview() {
+  const { t } = useLocale();
+
   return (
     <div className="p-6 lg:p-10 max-w-5xl">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight mb-1" style={{ fontFamily: "var(--font-heading)" }}>
-          School Overview
+          {t("app.schoolOverview")}
         </h1>
         <p className="text-sm text-muted-foreground">{adminData.schoolName}</p>
       </motion.div>
@@ -31,10 +34,10 @@ export default function AdminOverview() {
         className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
       >
         {[
-          { icon: Users, label: "Total Students", value: adminData.totalStudents, color: "text-primary" },
-          { icon: GraduationCap, label: "Active Classes", value: adminData.totalClasses, color: "text-warm" },
-          { icon: TrendingUp, label: "Platform Engagement", value: `${adminData.platformEngagement}%`, color: "text-success" },
-          { icon: Clock, label: "Avg Session", value: `${adminData.averageSessionMinutes}min`, color: "text-gold-foreground" },
+          { icon: Users, label: t("app.totalStudents"), value: adminData.totalStudents, color: "text-primary" },
+          { icon: GraduationCap, label: t("app.activeClasses"), value: adminData.totalClasses, color: "text-warm" },
+          { icon: TrendingUp, label: t("app.platformEngagement"), value: `${adminData.platformEngagement}%`, color: "text-success" },
+          { icon: Clock, label: t("app.avgSession"), value: `${adminData.averageSessionMinutes}min`, color: "text-gold-foreground" },
         ].map((stat) => (
           <div key={stat.label} className="bg-card rounded-2xl border border-border/60 p-5">
             <stat.icon className={`w-5 h-5 ${stat.color} mb-3`} />
@@ -53,15 +56,15 @@ export default function AdminOverview() {
       >
         <div className="bg-card rounded-2xl border border-border/60 p-5 text-center">
           <div className="text-3xl font-bold text-warm">{adminData.weeklyActiveUsers}</div>
-          <p className="text-xs text-muted-foreground mt-1">Weekly Active Users</p>
+          <p className="text-xs text-muted-foreground mt-1">{t("app.weeklyActiveUsers")}</p>
         </div>
         <div className="bg-card rounded-2xl border border-border/60 p-5 text-center">
           <div className="text-3xl font-bold">{adminData.totalTeachers}</div>
-          <p className="text-xs text-muted-foreground mt-1">Teachers</p>
+          <p className="text-xs text-muted-foreground mt-1">{t("app.teachers")}</p>
         </div>
         <div className="bg-card rounded-2xl border border-border/60 p-5 text-center">
           <div className="text-3xl font-bold text-success">{adminData.activeBooksCount}</div>
-          <p className="text-xs text-muted-foreground mt-1">Active Books</p>
+          <p className="text-xs text-muted-foreground mt-1">{t("app.activeBooks")}</p>
         </div>
       </motion.div>
 
@@ -74,9 +77,9 @@ export default function AdminOverview() {
       >
         <h2 className="text-lg font-semibold mb-1 flex items-center gap-2">
           <BarChart3 className="w-5 h-5 text-warm" />
-          Class Performance
+          {t("app.classPerformance")}
         </h2>
-        <p className="text-xs text-muted-foreground mb-5">Engagement and progress by class</p>
+        <p className="text-xs text-muted-foreground mb-5">{t("app.engagementByClass")}</p>
 
         <div className="space-y-4">
           {adminData.classMetrics.map((cls) => (
@@ -84,7 +87,7 @@ export default function AdminOverview() {
               <div className="w-12 text-sm font-semibold">{cls.class}</div>
               <div className="flex-1">
                 <div className="flex items-center justify-between text-xs mb-1">
-                  <span className="text-muted-foreground">{cls.teacher} · {cls.students} students</span>
+                  <span className="text-muted-foreground">{cls.teacher} · {cls.students} {t("app.students")}</span>
                   <span className="font-medium">{cls.avgProgress}%</span>
                 </div>
                 <Progress value={cls.avgProgress} className="h-2" />
@@ -115,9 +118,9 @@ export default function AdminOverview() {
       >
         <h2 className="text-lg font-semibold mb-1 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-primary" />
-          Top Books
+          {t("app.topBooks")}
         </h2>
-        <p className="text-xs text-muted-foreground mb-5">Most used books across classes</p>
+        <p className="text-xs text-muted-foreground mb-5">{t("app.mostUsedBooks")}</p>
 
         <div className="space-y-3">
           {adminData.topBooks.map((book, i) => (
@@ -125,9 +128,9 @@ export default function AdminOverview() {
               <span className="text-lg font-bold text-muted-foreground w-6">{i + 1}</span>
               <div className="flex-1">
                 <p className="text-sm font-medium">{book.title}</p>
-                <p className="text-xs text-muted-foreground">{book.classes} classes using</p>
+                <p className="text-xs text-muted-foreground">{book.classes} {t("app.classesUsing")}</p>
               </div>
-              <Badge variant="secondary" className="text-xs">{book.avgEngagement}% engagement</Badge>
+              <Badge variant="secondary" className="text-xs">{book.avgEngagement}% {t("app.engagement")}</Badge>
             </div>
           ))}
         </div>

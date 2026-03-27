@@ -15,6 +15,7 @@ import {
   Send,
 } from "lucide-react";
 import { AnimatedBrain } from "@/components/ui/animated-illustrations";
+import { useLocale } from "@/lib/locale-context";
 
 interface GeneratedQuestion {
   type: "checkpoint" | "reflection" | "challenge" | "discussion";
@@ -28,13 +29,6 @@ interface GeneratedQuestion {
   deliverable?: string;
   discussionGuide?: string;
 }
-
-const typeConfig = {
-  checkpoint: { icon: Target, color: "bg-primary/10 text-primary", label: "Quiz" },
-  reflection: { icon: Brain, color: "bg-warm/10 text-warm", label: "Reflexão" },
-  challenge: { icon: Lightbulb, color: "bg-gold/10 text-gold-foreground", label: "Desafio" },
-  discussion: { icon: MessageCircle, color: "bg-success/10 text-success", label: "Discussão" },
-};
 
 interface AIMissionGeneratorProps {
   bookTitle: string;
@@ -53,6 +47,7 @@ export function AIMissionGenerator({
   studentName,
   studentLevel = "intermediário",
 }: AIMissionGeneratorProps) {
+  const { t } = useLocale();
   const [questions, setQuestions] = useState<GeneratedQuestion[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -60,6 +55,13 @@ export function AIMissionGenerator({
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
   const [textResponses, setTextResponses] = useState<Record<number, string>>({});
   const [submittedQ, setSubmittedQ] = useState<Set<number>>(new Set());
+
+  const typeConfig = {
+    checkpoint: { icon: Target, color: "bg-primary/10 text-primary", label: t("app.quiz") },
+    reflection: { icon: Brain, color: "bg-warm/10 text-warm", label: t("app.reflection") },
+    challenge: { icon: Lightbulb, color: "bg-gold/10 text-gold-foreground", label: t("app.challenge") },
+    discussion: { icon: MessageCircle, color: "bg-success/10 text-success", label: t("app.discussion") },
+  };
 
   const generateQuestions = async () => {
     setLoading(true);
@@ -83,7 +85,7 @@ export function AIMissionGenerator({
         }),
       });
 
-      if (!res.ok) throw new Error("Falha ao gerar questões");
+      if (!res.ok) throw new Error(t("app.failedToGenerate"));
 
       const data = await res.json();
       setQuestions(data.questions);
@@ -113,9 +115,9 @@ export function AIMissionGenerator({
               <Sparkles className="w-5 h-5 text-warm" />
             </div>
             <div>
-              <h3 className="text-sm font-semibold">Missões IA — Capítulo {chapter}</h3>
+              <h3 className="text-sm font-semibold">{t("app.aiMissionsChapter")} {chapter}</h3>
               <p className="text-xs text-muted-foreground">
-                Questões personalizadas para {studentName} · {bookTitle}
+                {t("app.personalizedFor")} {studentName} · {bookTitle}
               </p>
             </div>
           </div>
@@ -129,7 +131,7 @@ export function AIMissionGenerator({
             ) : (
               <Sparkles className="w-4 h-4" />
             )}
-            {loading ? "Gerando..." : questions.length > 0 ? "Regerar" : "Gerar Missões"}
+            {loading ? t("app.generating") : questions.length > 0 ? t("app.regenerate") : t("app.generateMissions")}
           </button>
         </div>
       </div>
@@ -144,9 +146,9 @@ export function AIMissionGenerator({
             className="flex flex-col items-center py-12"
           >
             <AnimatedBrain className="w-24 h-24 mb-4" />
-            <p className="text-sm text-muted-foreground">A IA está analisando o capítulo {chapter}...</p>
+            <p className="text-sm text-muted-foreground">{t("app.aiAnalyzing")} {chapter}...</p>
             <p className="text-xs text-muted-foreground mt-1">
-              Criando questões personalizadas para {studentName}
+              {t("app.creatingQuestions")} {studentName}
             </p>
           </motion.div>
         )}
@@ -261,7 +263,7 @@ export function AIMissionGenerator({
                                 className="text-xs text-warm mt-2 flex items-center gap-1.5"
                               >
                                 <Lightbulb className="w-3 h-3" />
-                                Dica: {q.hint}
+                                {t("app.hint")} {q.hint}
                               </motion.p>
                             )}
                           </div>
@@ -275,12 +277,12 @@ export function AIMissionGenerator({
                             )}
                             {q.deliverable && (
                               <p className="text-xs text-muted-foreground mb-2">
-                                Entrega: {q.deliverable}
+                                {t("app.deliverable")} {q.deliverable}
                               </p>
                             )}
                             {q.discussionGuide && (
                               <p className="text-xs text-muted-foreground mb-2 italic">
-                                Guia: {q.discussionGuide}
+                                {t("app.guide")} {q.discussionGuide}
                               </p>
                             )}
                             <textarea
@@ -289,7 +291,7 @@ export function AIMissionGenerator({
                                 setTextResponses((prev) => ({ ...prev, [i]: e.target.value }))
                               }
                               disabled={isSubmitted}
-                              placeholder="Escreva sua resposta aqui..."
+                              placeholder={t("app.writeResponse")}
                               className="w-full min-h-[100px] px-4 py-3 rounded-xl border border-border/60 bg-secondary/30 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-warm/50 disabled:opacity-60"
                             />
                           </div>
@@ -306,7 +308,7 @@ export function AIMissionGenerator({
                               className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-xs font-semibold hover:opacity-90 transition-opacity disabled:opacity-40"
                             >
                               <Send className="w-3.5 h-3.5" />
-                              Enviar Resposta
+                              {t("app.submitAnswer")}
                             </button>
                           </div>
                         )}
@@ -320,7 +322,7 @@ export function AIMissionGenerator({
                           >
                             <CheckCircle2 className="w-4 h-4" />
                             <span className="font-medium">
-                              +{q.xpReward} XP! Missão completada!
+                              +{q.xpReward} XP! {t("app.missionCompleted")}
                             </span>
                           </motion.div>
                         )}
@@ -339,10 +341,10 @@ export function AIMissionGenerator({
         <div className="p-8 text-center">
           <AnimatedBrain className="w-20 h-20 mx-auto mb-4 opacity-50" />
           <p className="text-sm text-muted-foreground mb-1">
-            A IA vai gerar missões personalizadas para você
+            {t("app.aiWillGenerate")}
           </p>
           <p className="text-xs text-muted-foreground">
-            Baseadas no livro, capítulo e seu nível de leitura
+            {t("app.basedOnBook")}
           </p>
         </div>
       )}

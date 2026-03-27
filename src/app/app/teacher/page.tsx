@@ -21,8 +21,10 @@ import {
 } from "lucide-react";
 import { AnimatedProgressRing } from "@/components/ui/animated-illustrations";
 import Link from "next/link";
+import { useLocale } from "@/lib/locale-context";
 
 export default function TeacherDashboard() {
+  const { t } = useLocale();
   const totalStudents = currentTeacher.classes.reduce((s, c) => s + c.studentCount, 0);
   const avgEngagement = Math.round(
     currentTeacher.classes.reduce((s, c) => s + c.engagementScore, 0) / currentTeacher.classes.length
@@ -40,7 +42,7 @@ export default function TeacherDashboard() {
         transition={{ duration: 0.5 }}
         className="mb-8"
       >
-        <p className="text-sm text-muted-foreground mb-1">Bom dia,</p>
+        <p className="text-sm text-muted-foreground mb-1">{t("app.goodMorning")}</p>
         <h1
           className="text-3xl font-bold tracking-tight"
           style={{ fontFamily: "var(--font-heading)" }}
@@ -60,27 +62,27 @@ export default function TeacherDashboard() {
         <div className="bg-card rounded-2xl border border-border/60 p-5">
           <Users className="w-5 h-5 text-primary mb-3" />
           <div className="text-2xl font-bold">{totalStudents}</div>
-          <p className="text-xs text-muted-foreground">Total de Alunos</p>
+          <p className="text-xs text-muted-foreground">{t("app.totalStudents")}</p>
         </div>
         <div className="bg-card rounded-2xl border border-border/60 p-5">
           <BookOpen className="w-5 h-5 text-warm mb-3" />
           <div className="text-2xl font-bold">{currentTeacher.classes.length}</div>
-          <p className="text-xs text-muted-foreground">Turmas Ativas</p>
+          <p className="text-xs text-muted-foreground">{t("app.activeClasses")}</p>
         </div>
         <div className="bg-card rounded-2xl border border-border/60 p-5">
           <TrendingUp className="w-5 h-5 text-success mb-3" />
           <div className="text-2xl font-bold">{avgEngagement}%</div>
-          <p className="text-xs text-muted-foreground">Engajamento Médio</p>
+          <p className="text-xs text-muted-foreground">{t("app.avgEngagement")}</p>
         </div>
         <div className="bg-card rounded-2xl border border-border/60 p-5">
           <Target className="w-5 h-5 text-gold-foreground mb-3" />
           <div className="text-2xl font-bold">24</div>
-          <p className="text-xs text-muted-foreground">Missões Criadas</p>
+          <p className="text-xs text-muted-foreground">{t("app.missionsCreated")}</p>
         </div>
         <div className="bg-card rounded-2xl border border-border/60 p-5">
           <Sparkles className="w-5 h-5 text-warm mb-3" />
           <div className="text-2xl font-bold">156</div>
-          <p className="text-xs text-muted-foreground">Missões IA Geradas</p>
+          <p className="text-xs text-muted-foreground">{t("app.aiMissionsGenerated")}</p>
         </div>
       </motion.div>
 
@@ -93,28 +95,28 @@ export default function TeacherDashboard() {
           transition={{ delay: 0.2 }}
           className="bg-card rounded-2xl border border-border/60 p-6 flex flex-col items-center justify-center"
         >
-          <h3 className="text-sm font-semibold mb-4">Engajamento Geral</h3>
+          <h3 className="text-sm font-semibold mb-4">{t("app.overallEngagement")}</h3>
           <AnimatedProgressRing progress={avgEngagement} size={140} />
           <div className="flex items-center gap-4 mt-4">
             <div className="text-center">
               <div className="text-lg font-bold text-success">
                 {classStudents.filter((s) => s.status === "ahead").length}
               </div>
-              <p className="text-[10px] text-muted-foreground">Adiantados</p>
+              <p className="text-[10px] text-muted-foreground">{t("app.aheadPlural")}</p>
             </div>
             <div className="w-px h-8 bg-border" />
             <div className="text-center">
               <div className="text-lg font-bold">
                 {classStudents.filter((s) => s.status === "on-track").length}
               </div>
-              <p className="text-[10px] text-muted-foreground">No Ritmo</p>
+              <p className="text-[10px] text-muted-foreground">{t("app.onTrackPlural")}</p>
             </div>
             <div className="w-px h-8 bg-border" />
             <div className="text-center">
               <div className="text-lg font-bold text-destructive">
                 {classStudents.filter((s) => s.status === "behind").length}
               </div>
-              <p className="text-[10px] text-muted-foreground">Atrasados</p>
+              <p className="text-[10px] text-muted-foreground">{t("app.behindPlural")}</p>
             </div>
           </div>
         </motion.div>
@@ -127,12 +129,12 @@ export default function TeacherDashboard() {
           className="lg:col-span-2"
         >
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold">Minhas Turmas</h2>
+            <h2 className="text-lg font-semibold">{t("app.myClasses")}</h2>
             <Link
               href="/app/teacher/classes"
               className="text-xs text-warm flex items-center gap-1 hover:underline"
             >
-              Ver Todas <ArrowRight className="w-3 h-3" />
+              {t("app.viewAll")} <ArrowRight className="w-3 h-3" />
             </Link>
           </div>
           <div className="space-y-3">
@@ -145,7 +147,7 @@ export default function TeacherDashboard() {
                   <div>
                     <h3 className="text-sm font-semibold">{cls.name}</h3>
                     <p className="text-xs text-muted-foreground">
-                      {cls.studentCount} alunos · {cls.activeBook}
+                      {cls.studentCount} {t("app.students")} · {cls.activeBook}
                     </p>
                   </div>
                   <div className="flex items-center gap-2">
@@ -159,7 +161,7 @@ export default function TeacherDashboard() {
                           : "bg-destructive/10 text-destructive"
                       }`}
                     >
-                      {cls.engagementScore}% engajados
+                      {cls.engagementScore}% {t("app.engaged")}
                     </Badge>
                   </div>
                 </div>
@@ -186,18 +188,18 @@ export default function TeacherDashboard() {
       >
         <div className="flex items-center justify-between mb-5">
           <div>
-            <h2 className="text-lg font-semibold">Turma 7A — Visão dos Alunos</h2>
-            <p className="text-xs text-muted-foreground">O Doador de Memórias · 28 alunos</p>
+            <h2 className="text-lg font-semibold">Turma 7A — {t("app.studentOverview")}</h2>
+            <p className="text-xs text-muted-foreground">O Doador de Memórias · 28 {t("app.students")}</p>
           </div>
           <div className="flex items-center gap-2 text-xs">
             <span className="flex items-center gap-1 text-success">
-              <div className="w-2 h-2 rounded-full bg-success" /> Adiantado
+              <div className="w-2 h-2 rounded-full bg-success" /> {t("app.ahead")}
             </span>
             <span className="flex items-center gap-1">
-              <div className="w-2 h-2 rounded-full bg-warm" /> No Ritmo
+              <div className="w-2 h-2 rounded-full bg-warm" /> {t("app.onTrack")}
             </span>
             <span className="flex items-center gap-1 text-destructive">
-              <div className="w-2 h-2 rounded-full bg-destructive" /> Atrasado
+              <div className="w-2 h-2 rounded-full bg-destructive" /> {t("app.behind")}
             </span>
           </div>
         </div>
@@ -232,7 +234,7 @@ export default function TeacherDashboard() {
                 <div className="flex items-center gap-3 text-[10px] text-muted-foreground mt-0.5">
                   <span>🔥 {student.streak}d</span>
                   <span>⚡ {student.xp} XP</span>
-                  <span>🎯 {student.missionsCompleted} missões</span>
+                  <span>🎯 {student.missionsCompleted} {t("app.missions").toLowerCase()}</span>
                 </div>
               </div>
               <div className="w-28 shrink-0">
@@ -268,18 +270,18 @@ export default function TeacherDashboard() {
       >
         <Link href="/app/teacher/students" className="bg-card rounded-2xl border border-border/60 p-5 hover:shadow-md transition-all group">
           <UserCheck className="w-5 h-5 text-primary mb-2 group-hover:scale-110 transition-transform" />
-          <h3 className="text-sm font-semibold">Análise de Alunos</h3>
-          <p className="text-[10px] text-muted-foreground">Performance individual detalhada</p>
+          <h3 className="text-sm font-semibold">{t("app.studentAnalysis")}</h3>
+          <p className="text-[10px] text-muted-foreground">{t("app.detailedPerformance")}</p>
         </Link>
         <Link href="/app/teacher/exercises" className="bg-card rounded-2xl border border-border/60 p-5 hover:shadow-md transition-all group">
           <FileText className="w-5 h-5 text-warm mb-2 group-hover:scale-110 transition-transform" />
-          <h3 className="text-sm font-semibold">Exercícios</h3>
-          <p className="text-[10px] text-muted-foreground">Criar, enviar e corrigir</p>
+          <h3 className="text-sm font-semibold">{t("app.exercises")}</h3>
+          <p className="text-[10px] text-muted-foreground">{t("app.exercisesDesc")}</p>
         </Link>
         <Link href="/app/teacher/olympics" className="bg-card rounded-2xl border border-border/60 p-5 hover:shadow-md transition-all group">
           <Medal className="w-5 h-5 text-gold-foreground mb-2 group-hover:scale-110 transition-transform" />
-          <h3 className="text-sm font-semibold">Olimpíadas Literárias</h3>
-          <p className="text-[10px] text-muted-foreground">Competições entre turmas</p>
+          <h3 className="text-sm font-semibold">{t("app.literaryOlympics")}</h3>
+          <p className="text-[10px] text-muted-foreground">{t("app.literaryOlympicsDesc")}</p>
         </Link>
       </motion.div>
 
@@ -292,23 +294,23 @@ export default function TeacherDashboard() {
       >
         <div className="flex items-center gap-3 mb-3">
           <Sparkles className="w-5 h-5 text-warm" />
-          <h3 className="text-sm font-semibold">Insights IA</h3>
+          <h3 className="text-sm font-semibold">{t("app.aiInsights")}</h3>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-card/80 rounded-xl p-4">
-            <p className="text-xs text-muted-foreground mb-1">Alunos que precisam de atenção</p>
+            <p className="text-xs text-muted-foreground mb-1">{t("app.needsAttention")}</p>
             <p className="text-sm font-semibold text-destructive">Pedro Santos, Gabriel Oliveira</p>
-            <p className="text-[10px] text-muted-foreground mt-1">Sem streak ativo e abaixo de 50% de progresso</p>
+            <p className="text-[10px] text-muted-foreground mt-1">{t("app.noStreakBelow50")}</p>
           </div>
           <div className="bg-card/80 rounded-xl p-4">
-            <p className="text-xs text-muted-foreground mb-1">Destaques da semana</p>
+            <p className="text-xs text-muted-foreground mb-1">{t("app.weekHighlights")}</p>
             <p className="text-sm font-semibold text-success">Maria Silva, Lucas Pereira</p>
-            <p className="text-[10px] text-muted-foreground mt-1">Streaks acima de 8 dias e +3 missões completas</p>
+            <p className="text-[10px] text-muted-foreground mt-1">{t("app.highStreaks")}</p>
           </div>
           <div className="bg-card/80 rounded-xl p-4">
-            <p className="text-xs text-muted-foreground mb-1">Sugestão</p>
-            <p className="text-sm font-semibold">Criar discussão Cap. 15</p>
-            <p className="text-[10px] text-muted-foreground mt-1">62% da turma já passou do capítulo 14</p>
+            <p className="text-xs text-muted-foreground mb-1">{t("app.suggestion")}</p>
+            <p className="text-sm font-semibold">{t("app.cap")} 15</p>
+            <p className="text-[10px] text-muted-foreground mt-1">62%</p>
           </div>
         </div>
       </motion.div>

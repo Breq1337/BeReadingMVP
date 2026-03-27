@@ -6,10 +6,12 @@ import { books, currentStudent } from "@/lib/mock-data";
 import { searchBooks, type BookSearchResult } from "@/lib/open-library";
 import { Badge } from "@/components/ui/badge";
 import { BookOpen, CheckCircle2, Search, Loader2, Plus, BookMarked, Smartphone, X } from "lucide-react";
+import { useLocale } from "@/lib/locale-context";
 
 const completedBookIds = ["b2", "b5"];
 
 export default function StudentBooks() {
+  const { t } = useLocale();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<BookSearchResult[]>([]);
   const [searching, setSearching] = useState(false);
@@ -46,10 +48,10 @@ export default function StudentBooks() {
       >
         <div>
           <h1 className="text-3xl font-bold tracking-tight mb-2" style={{ fontFamily: "var(--font-heading)" }}>
-            Meus Livros
+            {t("app.myBooks")}
           </h1>
           <p className="text-sm text-muted-foreground">
-            {currentStudent.booksCompleted} livros concluídos · 1 em andamento
+            {currentStudent.booksCompleted} {t("app.booksCompleted")} · 1 {t("app.inProgress")}
           </p>
         </div>
         <button
@@ -57,7 +59,7 @@ export default function StudentBooks() {
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity"
         >
           <Plus className="w-4 h-4" />
-          Adicionar Livro
+          {t("app.addBook")}
         </button>
       </motion.div>
 
@@ -81,7 +83,7 @@ export default function StudentBooks() {
               <div className="p-6 border-b border-border/40">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-semibold" style={{ fontFamily: "var(--font-heading)" }}>
-                    Adicionar Novo Livro
+                    {t("app.addNewBook")}
                   </h2>
                   <button onClick={() => setShowAddModal(false)} className="text-muted-foreground hover:text-foreground">
                     <X className="w-5 h-5" />
@@ -98,8 +100,8 @@ export default function StudentBooks() {
                   >
                     <BookMarked className={`w-5 h-5 ${bookType === "physical" ? "text-warm" : "text-muted-foreground"}`} />
                     <div className="text-left">
-                      <p className="text-sm font-medium">Livro Físico</p>
-                      <p className="text-[10px] text-muted-foreground">Já tenho o livro em mãos</p>
+                      <p className="text-sm font-medium">{t("app.physicalBook")}</p>
+                      <p className="text-[10px] text-muted-foreground">{t("app.physicalBookDesc")}</p>
                     </div>
                   </button>
                   <button
@@ -110,8 +112,8 @@ export default function StudentBooks() {
                   >
                     <Smartphone className={`w-5 h-5 ${bookType === "digital" ? "text-primary" : "text-muted-foreground"}`} />
                     <div className="text-left">
-                      <p className="text-sm font-medium">Catálogo Digital</p>
-                      <p className="text-[10px] text-muted-foreground">Buscar no acervo online</p>
+                      <p className="text-sm font-medium">{t("app.digitalCatalog")}</p>
+                      <p className="text-[10px] text-muted-foreground">{t("app.digitalCatalogDesc")}</p>
                     </div>
                   </button>
                 </div>
@@ -125,7 +127,7 @@ export default function StudentBooks() {
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                      placeholder="Buscar por título, autor ou ISBN..."
+                      placeholder={t("app.searchPlaceholder")}
                       className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-border/60 bg-secondary/30 text-sm focus:outline-none focus:ring-2 focus:ring-warm/50"
                     />
                   </div>
@@ -134,10 +136,10 @@ export default function StudentBooks() {
                     disabled={searching || !searchQuery.trim()}
                     className="px-4 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 disabled:opacity-50"
                   >
-                    {searching ? <Loader2 className="w-4 h-4 animate-spin" /> : "Buscar"}
+                    {searching ? <Loader2 className="w-4 h-4 animate-spin" /> : t("app.search")}
                   </button>
                 </div>
-                <p className="text-[10px] text-muted-foreground mt-2">Dados via Open Library API — milhões de livros disponíveis</p>
+                <p className="text-[10px] text-muted-foreground mt-2">{t("app.openLibraryNote")}</p>
               </div>
 
               {/* Search Results */}
@@ -145,7 +147,7 @@ export default function StudentBooks() {
                 {searching && (
                   <div className="flex items-center justify-center py-8">
                     <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
-                    <span className="ml-2 text-sm text-muted-foreground">Buscando livros...</span>
+                    <span className="ml-2 text-sm text-muted-foreground">{t("app.searchingBooks")}</span>
                   </div>
                 )}
 
@@ -173,7 +175,7 @@ export default function StudentBooks() {
                           <p className="text-xs text-muted-foreground">{book.author}</p>
                           <div className="flex items-center gap-2 mt-1">
                             {book.year && <span className="text-[10px] text-muted-foreground">{book.year}</span>}
-                            {book.pages && <span className="text-[10px] text-muted-foreground">{book.pages} pág.</span>}
+                            {book.pages && <span className="text-[10px] text-muted-foreground">{book.pages} {t("app.pages")}</span>}
                             {book.subjects.length > 0 && (
                               <Badge variant="secondary" className="text-[10px]">{book.subjects[0]}</Badge>
                             )}
@@ -189,7 +191,7 @@ export default function StudentBooks() {
 
                 {!searching && searchResults.length === 0 && searchQuery && (
                   <p className="text-center text-sm text-muted-foreground py-8">
-                    Nenhum resultado encontrado. Tente outro termo.
+                    {t("app.noResultsTryAgain")}
                   </p>
                 )}
               </div>
@@ -200,7 +202,7 @@ export default function StudentBooks() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <Badge variant="secondary" className="text-xs capitalize">
-                        {bookType === "physical" ? "📖 Físico" : "📱 Digital"}
+                        {bookType === "physical" ? `📖 ${t("app.physical")}` : `📱 ${t("app.digital")}`}
                       </Badge>
                       <span className="text-sm font-medium">{selectedBook.title}</span>
                     </div>
@@ -209,7 +211,7 @@ export default function StudentBooks() {
                       className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-warm text-white text-sm font-semibold hover:opacity-90"
                     >
                       <Plus className="w-4 h-4" />
-                      Adicionar à Minha Lista
+                      {t("app.addToMyList")}
                     </button>
                   </div>
                 </div>
@@ -221,7 +223,7 @@ export default function StudentBooks() {
 
       {/* Currently reading */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="mb-8">
-        <p className="text-xs text-muted-foreground uppercase tracking-wider mb-4">📖 Lendo Agora</p>
+        <p className="text-xs text-muted-foreground uppercase tracking-wider mb-4">📖 {t("app.currentlyReading")}</p>
         {(() => {
           const book = books.find((b) => b.id === currentStudent.currentBookId)!;
           const progress = Math.round((currentStudent.currentChapter / book.totalChapters) * 100);
@@ -236,7 +238,7 @@ export default function StudentBooks() {
                     <h2 className="text-xl font-semibold" style={{ fontFamily: "var(--font-heading)" }}>{book.title}</h2>
                     <Badge variant="secondary" className="text-[10px] capitalize">{book.type || "physical"}</Badge>
                   </div>
-                  <p className="text-sm text-muted-foreground mb-2">por {book.author}</p>
+                  <p className="text-sm text-muted-foreground mb-2">{t("app.by")} {book.author}</p>
                   <p className="text-sm text-muted-foreground mb-3 leading-relaxed">{book.description}</p>
                   <div className="flex items-center gap-2 mb-3">
                     <Badge variant="secondary" className="text-xs">{book.genre}</Badge>
@@ -245,7 +247,7 @@ export default function StudentBooks() {
                   <div className="w-full bg-secondary rounded-full h-2.5 overflow-hidden">
                     <motion.div className="bg-gradient-to-r from-warm to-gold h-full rounded-full" initial={{ width: 0 }} animate={{ width: `${progress}%` }} transition={{ duration: 1 }} />
                   </div>
-                  <p className="text-xs text-muted-foreground mt-2">Capítulo {currentStudent.currentChapter} de {book.totalChapters} — {progress}%</p>
+                  <p className="text-xs text-muted-foreground mt-2">{t("app.chapter")} {currentStudent.currentChapter} {t("app.of")} {book.totalChapters} — {progress}%</p>
                 </div>
               </div>
             </div>
@@ -256,7 +258,7 @@ export default function StudentBooks() {
       {/* Recently Added */}
       {addedBooks.length > 0 && (
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-          <p className="text-xs text-muted-foreground uppercase tracking-wider mb-4">Adicionados Recentemente</p>
+          <p className="text-xs text-muted-foreground uppercase tracking-wider mb-4">{t("app.recentlyAdded")}</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {addedBooks.map((book) => (
               <div key={book.id} className="bg-card rounded-2xl border border-warm/20 p-4 flex items-start gap-4">
@@ -268,7 +270,7 @@ export default function StudentBooks() {
                 <div className="flex-1 min-w-0">
                   <h3 className="text-sm font-semibold truncate">{book.title}</h3>
                   <p className="text-xs text-muted-foreground">{book.author}</p>
-                  <Badge variant="secondary" className="text-[10px] mt-2">Novo</Badge>
+                  <Badge variant="secondary" className="text-[10px] mt-2">{t("app.new")}</Badge>
                 </div>
               </div>
             ))}
@@ -278,7 +280,7 @@ export default function StudentBooks() {
 
       {/* Library */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-        <p className="text-xs text-muted-foreground uppercase tracking-wider mb-4">Biblioteca</p>
+        <p className="text-xs text-muted-foreground uppercase tracking-wider mb-4">{t("app.library")}</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {books.map((book) => {
             const isCompleted = completedBookIds.includes(book.id);
@@ -296,7 +298,7 @@ export default function StudentBooks() {
                     <div className="flex items-center gap-1.5 flex-wrap">
                       <Badge variant="secondary" className="text-[10px]">{book.genre}</Badge>
                       <Badge variant="secondary" className="text-[10px] capitalize">{book.type || "physical"}</Badge>
-                      {isCurrent && <Badge className="text-[10px] bg-warm/15 text-warm-foreground border-0">Lendo</Badge>}
+                      {isCurrent && <Badge className="text-[10px] bg-warm/15 text-warm-foreground border-0">{t("app.reading")}</Badge>}
                     </div>
                   </div>
                 </div>

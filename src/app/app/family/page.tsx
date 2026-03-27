@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { AnimatedProgressRing, AnimatedFlame } from "@/components/ui/animated-illustrations";
+import { useLocale } from "@/lib/locale-context";
 
 const weeklyPercent = Math.round(
   (familyData.weeklyReadingMinutes / familyData.weeklyGoalMinutes) * 100
@@ -19,13 +20,15 @@ const bookProgress = Math.round(
 );
 
 export default function FamilyOverview() {
+  const { t } = useLocale();
+
   return (
     <div className="p-6 lg:p-10 max-w-5xl">
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-        <p className="text-sm text-muted-foreground mb-1">Olá, {familyData.parentName}</p>
+        <p className="text-sm text-muted-foreground mb-1">{t("app.hello")} {familyData.parentName}</p>
         <h1 className="text-3xl font-bold tracking-tight" style={{ fontFamily: "var(--font-heading)" }}>
-          Jornada de Leitura de {familyData.studentName}
+          {t("app.readingJourney")} {t("app.of")} {familyData.studentName}
         </h1>
         <p className="text-xs text-muted-foreground mt-1">{familyData.className} · {familyData.teacherName}</p>
       </motion.div>
@@ -43,12 +46,12 @@ export default function FamilyOverview() {
         <div className="bg-card rounded-2xl border border-border/60 p-5 text-center">
           <Star className="w-5 h-5 text-gold-foreground mx-auto mb-2" />
           <div className="text-2xl font-bold">Nv.{currentStudent.level}</div>
-          <p className="text-xs text-muted-foreground">Nível Leitor</p>
+          <p className="text-xs text-muted-foreground">{t("app.readerLevel")}</p>
         </div>
         <div className="bg-card rounded-2xl border border-border/60 p-5 text-center">
           <Trophy className="w-5 h-5 text-warm mx-auto mb-2" />
           <div className="text-2xl font-bold">{familyData.classRank}º</div>
-          <p className="text-xs text-muted-foreground">de {familyData.classSize} na turma</p>
+          <p className="text-xs text-muted-foreground">{t("app.of")} {familyData.classSize} {t("app.inClass")}</p>
         </div>
       </motion.div>
 
@@ -56,7 +59,7 @@ export default function FamilyOverview() {
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
         className="bg-card rounded-2xl border border-border/60 overflow-hidden mb-6">
         <div className="bg-gradient-to-r from-primary/5 via-warm/5 to-gold/5 p-6">
-          <p className="text-xs text-muted-foreground uppercase tracking-wider mb-4">📖 Lendo Agora</p>
+          <p className="text-xs text-muted-foreground uppercase tracking-wider mb-4">📖 {t("app.currentlyReading")}</p>
           <div className="flex items-start gap-5">
             <div className="w-16 h-22 rounded-xl bg-gradient-to-br from-warm/30 to-gold/20 border border-warm/20 flex items-center justify-center text-4xl shadow-lg shadow-warm/10 shrink-0">
               {familyData.currentBook.cover}
@@ -65,17 +68,17 @@ export default function FamilyOverview() {
               <h2 className="text-xl font-semibold" style={{ fontFamily: "var(--font-heading)" }}>
                 {familyData.currentBook.title}
               </h2>
-              <p className="text-sm text-muted-foreground mb-3">por {familyData.currentBook.author}</p>
+              <p className="text-sm text-muted-foreground mb-3">{t("app.by")} {familyData.currentBook.author}</p>
               <div className="w-full bg-secondary rounded-full h-3 overflow-hidden mb-2">
                 <motion.div className="h-full rounded-full bg-gradient-to-r from-warm to-gold"
                   initial={{ width: 0 }} animate={{ width: `${bookProgress}%` }} transition={{ duration: 1 }} />
               </div>
               <div className="flex justify-between text-xs">
-                <span className="text-muted-foreground">Capítulo {familyData.currentChapter} de {familyData.totalChapters}</span>
+                <span className="text-muted-foreground">{t("app.chapter")} {familyData.currentChapter} {t("app.of")} {familyData.totalChapters}</span>
                 <span className="font-semibold text-warm">{bookProgress}%</span>
               </div>
               <p className="text-xs text-muted-foreground mt-2">
-                Próximo marco: {familyData.nextMilestone}
+                {t("app.nextMilestone")} {familyData.nextMilestone}
               </p>
             </div>
           </div>
@@ -88,39 +91,39 @@ export default function FamilyOverview() {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
           className="bg-card rounded-2xl border border-border/60 p-6">
           <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
-            <BarChart3 className="w-4 h-4 text-primary" /> Desempenho Detalhado
+            <BarChart3 className="w-4 h-4 text-primary" /> {t("app.detailedPerf")}
           </h3>
           <div className="space-y-4">
             <div>
               <div className="flex justify-between text-xs mb-1">
-                <span className="text-muted-foreground">XP Total</span>
+                <span className="text-muted-foreground">{t("app.totalXp")}</span>
                 <span className="font-medium">{currentStudent.xp} XP</span>
               </div>
               <Progress value={Math.min((currentStudent.xp / 1500) * 100, 100)} className="h-2" />
             </div>
             <div>
               <div className="flex justify-between text-xs mb-1">
-                <span className="text-muted-foreground">Missões Completas</span>
+                <span className="text-muted-foreground">{t("app.missionsComplete")}</span>
                 <span className="font-medium">{currentStudent.missionsCompleted} / 20</span>
               </div>
               <Progress value={((currentStudent.missionsCompleted || 0) / 20) * 100} className="h-2" />
             </div>
             <div>
               <div className="flex justify-between text-xs mb-1">
-                <span className="text-muted-foreground">Nota Média</span>
+                <span className="text-muted-foreground">{t("app.averageScore")}</span>
                 <span className="font-medium">{currentStudent.averageScore}%</span>
               </div>
               <Progress value={currentStudent.averageScore ?? 0} className="h-2" />
             </div>
             <div>
               <div className="flex justify-between text-xs mb-1">
-                <span className="text-muted-foreground">Livros Concluídos</span>
+                <span className="text-muted-foreground">{t("app.booksFinished")}</span>
                 <span className="font-medium">{currentStudent.booksCompleted}</span>
               </div>
               <Progress value={(currentStudent.booksCompleted / 5) * 100} className="h-2" />
             </div>
             <div className="flex justify-between text-xs">
-              <span className="text-muted-foreground">Tempo Total de Leitura</span>
+              <span className="text-muted-foreground">{t("app.totalReadingTime")}</span>
               <span className="font-medium">{currentStudent.totalReadingMinutes}min ({Math.round((currentStudent.totalReadingMinutes || 0) / 60)}h)</span>
             </div>
           </div>
@@ -130,24 +133,24 @@ export default function FamilyOverview() {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}
           className="bg-card rounded-2xl border border-border/60 p-6">
           <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
-            <TrendingUp className="w-4 h-4 text-success" /> Comparativo com a Turma
+            <TrendingUp className="w-4 h-4 text-success" /> {t("app.vsClass")}
           </h3>
           <div className="space-y-5">
             {[
               {
-                label: "Leitura Semanal",
+                label: t("app.weeklyReading"),
                 student: familyData.comparisons.readingVsClass.student,
                 avg: familyData.comparisons.readingVsClass.classAvg,
                 unit: "min",
               },
               {
-                label: "XP Total",
+                label: t("app.totalXp"),
                 student: familyData.comparisons.xpVsClass.student,
                 avg: familyData.comparisons.xpVsClass.classAvg,
                 unit: "XP",
               },
               {
-                label: "Missões Completas",
+                label: t("app.missionsComplete"),
                 student: familyData.comparisons.missionsVsClass.student,
                 avg: familyData.comparisons.missionsVsClass.classAvg,
                 unit: "",
@@ -183,7 +186,7 @@ export default function FamilyOverview() {
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
         className="bg-card rounded-2xl border border-border/60 p-6 mb-6">
         <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
-          <Calendar className="w-4 h-4 text-warm" /> Leitura da Semana
+          <Calendar className="w-4 h-4 text-warm" /> {t("app.thisWeekReading")}
         </h3>
         <div className="flex items-end justify-between gap-2 h-32">
           {familyData.weeklyStreakData.map((day) => {
@@ -204,7 +207,7 @@ export default function FamilyOverview() {
         </div>
         <div className="mt-4 flex items-center justify-between">
           <span className="text-xs text-muted-foreground">
-            {familyData.weeklyReadingMinutes} / {familyData.weeklyGoalMinutes} min meta semanal
+            {familyData.weeklyReadingMinutes} / {familyData.weeklyGoalMinutes} {t("app.weeklyGoalLabel")}
           </span>
           <span className="text-xs font-medium text-warm">{weeklyPercent}%</span>
         </div>
@@ -215,7 +218,7 @@ export default function FamilyOverview() {
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
         className="bg-card rounded-2xl border border-border/60 p-6 mb-6">
         <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
-          <Target className="w-4 h-4 text-primary" /> Últimas Missões
+          <Target className="w-4 h-4 text-primary" /> {t("app.latestMissions")}
         </h3>
         <div className="space-y-3">
           {familyData.recentMissions.map((mission, i) => (
@@ -238,7 +241,7 @@ export default function FamilyOverview() {
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
         className="bg-card rounded-2xl border border-border/60 p-6 mb-6">
         <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-gold-foreground" /> Conquistas de {familyData.studentName}
+          <Sparkles className="w-4 h-4 text-gold-foreground" /> {t("app.achievementsOf")} {familyData.studentName}
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {currentStudent.badges.map((badge) => (
@@ -257,7 +260,7 @@ export default function FamilyOverview() {
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }}
         className="bg-card rounded-2xl border border-border/60 p-6">
         <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
-          <Heart className="w-4 h-4 text-warm" /> Atividade Recente
+          <Heart className="w-4 h-4 text-warm" /> {t("app.recentActivity")}
         </h3>
         <div className="space-y-4">
           {familyData.recentActivity.map((activity, i) => (
@@ -266,7 +269,7 @@ export default function FamilyOverview() {
               <div className="flex-1">
                 <p className="text-sm">{activity.action}</p>
                 <p className="text-xs text-muted-foreground">
-                  {activity.book} · Capítulo {activity.chapter} · {activity.date}
+                  {activity.book} · {t("app.chapter")} {activity.chapter} · {activity.date}
                 </p>
               </div>
               {activity.xp > 0 && (
