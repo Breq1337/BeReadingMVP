@@ -12,8 +12,10 @@ import {
 } from "lucide-react";
 import { AnimatedProgressRing } from "@/components/ui/animated-illustrations";
 import Link from "next/link";
+import { useLocale } from "@/lib/locale-context";
 
 export default function TeacherStudents() {
+  const { t } = useLocale();
   const [expandedStudent, setExpandedStudent] = useState<string | null>(null);
   const [filter, setFilter] = useState<"all" | "ahead" | "on-track" | "behind">("all");
 
@@ -26,12 +28,12 @@ export default function TeacherStudents() {
     <div className="p-6 lg:p-10 max-w-6xl">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
         <Link href="/app/teacher" className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground mb-3">
-          <ArrowLeft className="w-3 h-3" /> Voltar ao Painel
+          <ArrowLeft className="w-3 h-3" /> {t("app.backToDashboard")}
         </Link>
         <h1 className="text-3xl font-bold tracking-tight" style={{ fontFamily: "var(--font-heading)" }}>
-          Análise Individual de Alunos
+          {t("app.individualStudentAnalysis")}
         </h1>
-        <p className="text-sm text-muted-foreground mt-1">Turma 7A — {classStudents.length} alunos</p>
+        <p className="text-sm text-muted-foreground mt-1">{t("app.class7A")} — {classStudents.length} alunos</p>
       </motion.div>
 
       {/* Class Averages */}
@@ -40,32 +42,32 @@ export default function TeacherStudents() {
         <div className="bg-card rounded-2xl border border-border/60 p-4 text-center">
           <Zap className="w-5 h-5 text-warm mx-auto mb-2" />
           <div className="text-xl font-bold">{avgXp}</div>
-          <p className="text-[10px] text-muted-foreground">XP Médio</p>
+          <p className="text-[10px] text-muted-foreground">{t("app.avgXP")}</p>
         </div>
         <div className="bg-card rounded-2xl border border-border/60 p-4 text-center">
           <Target className="w-5 h-5 text-primary mx-auto mb-2" />
           <div className="text-xl font-bold">{avgMissions}</div>
-          <p className="text-[10px] text-muted-foreground">Missões Média</p>
+          <p className="text-[10px] text-muted-foreground">{t("app.avgMissions")}</p>
         </div>
         <div className="bg-card rounded-2xl border border-border/60 p-4 text-center">
           <Star className="w-5 h-5 text-gold-foreground mx-auto mb-2" />
           <div className="text-xl font-bold">{avgScore}%</div>
-          <p className="text-[10px] text-muted-foreground">Nota Média</p>
+          <p className="text-[10px] text-muted-foreground">{t("app.avgScore")}</p>
         </div>
         <div className="bg-card rounded-2xl border border-border/60 p-4 text-center">
           <Clock className="w-5 h-5 text-success mx-auto mb-2" />
           <div className="text-xl font-bold">{Math.round(classStudents.reduce((s, st) => s + (st.totalReadingMinutes || 0), 0) / classStudents.length)}m</div>
-          <p className="text-[10px] text-muted-foreground">Leitura Média</p>
+          <p className="text-[10px] text-muted-foreground">{t("app.avgReading")}</p>
         </div>
       </motion.div>
 
       {/* Filters */}
       <div className="flex items-center gap-2 mb-6 flex-wrap">
         {([
-          { key: "all", label: "Todos", count: classStudents.length },
-          { key: "ahead", label: "Adiantados", count: classStudents.filter((s) => s.status === "ahead").length },
-          { key: "on-track", label: "No Ritmo", count: classStudents.filter((s) => s.status === "on-track").length },
-          { key: "behind", label: "Atrasados", count: classStudents.filter((s) => s.status === "behind").length },
+          { key: "all", label: t("app.all"), count: classStudents.length },
+          { key: "ahead", label: t("app.aheadPlural"), count: classStudents.filter((s) => s.status === "ahead").length },
+          { key: "on-track", label: t("app.onTrackPlural"), count: classStudents.filter((s) => s.status === "on-track").length },
+          { key: "behind", label: t("app.behindPlural"), count: classStudents.filter((s) => s.status === "behind").length },
         ] as const).map((f) => (
           <button
             key={f.key}
@@ -138,46 +140,46 @@ export default function TeacherStudents() {
                         <div className="bg-secondary/50 rounded-xl p-3 text-center">
                           <Flame className="w-4 h-4 text-destructive mx-auto mb-1" />
                           <div className="text-lg font-bold">{student.streak}</div>
-                          <p className="text-[10px] text-muted-foreground">Dias Seguidos</p>
+                          <p className="text-[10px] text-muted-foreground">{t("app.streakDays")}</p>
                         </div>
                         <div className="bg-secondary/50 rounded-xl p-3 text-center">
                           <Zap className="w-4 h-4 text-warm mx-auto mb-1" />
                           <div className="text-lg font-bold">{student.xp}</div>
-                          <p className="text-[10px] text-muted-foreground">XP Total</p>
+                          <p className="text-[10px] text-muted-foreground">{t("app.totalXpLabel")}</p>
                         </div>
                         <div className="bg-secondary/50 rounded-xl p-3 text-center">
                           <Star className="w-4 h-4 text-gold-foreground mx-auto mb-1" />
-                          <div className="text-lg font-bold">Nv.{student.level}</div>
-                          <p className="text-[10px] text-muted-foreground">Nível Leitor</p>
+                          <div className="text-lg font-bold">{t("app.lvl")}{student.level}</div>
+                          <p className="text-[10px] text-muted-foreground">{t("app.readerLevel")}</p>
                         </div>
                         <div className="bg-secondary/50 rounded-xl p-3 text-center">
                           <BookOpen className="w-4 h-4 text-primary mx-auto mb-1" />
                           <div className="text-lg font-bold">{student.booksCompleted}</div>
-                          <p className="text-[10px] text-muted-foreground">Livros Concluídos</p>
+                          <p className="text-[10px] text-muted-foreground">{t("app.booksCompleteLabel")}</p>
                         </div>
                       </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <div className="bg-secondary/30 rounded-xl p-4">
                           <h4 className="text-xs font-semibold mb-3 flex items-center gap-2">
-                            <BarChart3 className="w-3.5 h-3.5" /> Métricas de Desempenho
+                            <BarChart3 className="w-3.5 h-3.5" /> {t("app.performanceMetrics")}
                           </h4>
                           <div className="space-y-2">
                             <div className="flex justify-between text-xs">
-                              <span className="text-muted-foreground">Nota Média</span>
+                              <span className="text-muted-foreground">{t("app.avgScore")}</span>
                               <span className="font-medium">{student.averageScore}%</span>
                             </div>
                             <Progress value={student.averageScore ?? 0} className="h-1.5" />
                             <div className="flex justify-between text-xs mt-2">
-                              <span className="text-muted-foreground">Missões Completas</span>
+                              <span className="text-muted-foreground">{t("app.missionsCompleteLabel")}</span>
                               <span className="font-medium">{student.missionsCompleted}</span>
                             </div>
                             <div className="flex justify-between text-xs">
-                              <span className="text-muted-foreground">Tempo de Leitura</span>
+                              <span className="text-muted-foreground">{t("app.readingTime")}</span>
                               <span className="font-medium">{student.totalReadingMinutes}min</span>
                             </div>
                             <div className="flex justify-between text-xs">
-                              <span className="text-muted-foreground">Capítulo Atual</span>
+                              <span className="text-muted-foreground">{t("app.currentChapter")}</span>
                               <span className="font-medium">{student.currentChapter}/23</span>
                             </div>
                           </div>
@@ -185,7 +187,7 @@ export default function TeacherStudents() {
 
                         <div className="bg-secondary/30 rounded-xl p-4">
                           <h4 className="text-xs font-semibold mb-3 flex items-center gap-2">
-                            <Brain className="w-3.5 h-3.5" /> Análise IA
+                            <Brain className="w-3.5 h-3.5" /> {t("app.aiAnalysis")}
                           </h4>
                           <div className="space-y-2">
                             {student.status === "behind" ? (

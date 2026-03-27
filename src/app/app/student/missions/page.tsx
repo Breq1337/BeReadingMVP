@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { missions, currentStudent, books } from "@/lib/mock-data";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, Circle, Sparkles, MessageCircle, Brain, Target } from "lucide-react";
+import { useLocale } from "@/lib/locale-context";
 
 const missionIcons = {
   checkpoint: Target,
@@ -16,6 +17,8 @@ const currentBook = books.find((b) => b.id === currentStudent.currentBookId)!;
 const bookMissions = missions.filter((m) => m.bookId === currentStudent.currentBookId);
 
 export default function StudentMissions() {
+  const { t } = useLocale();
+
   return (
     <div className="p-6 lg:p-10 max-w-4xl">
       <motion.div
@@ -25,11 +28,11 @@ export default function StudentMissions() {
         className="mb-8"
       >
         <h1 className="text-3xl font-bold tracking-tight mb-2" style={{ fontFamily: "var(--font-heading)" }}>
-          Missions
+          {t("app.missions")}
         </h1>
         <p className="text-sm text-muted-foreground">
-          {currentBook.title} — {bookMissions.filter((m) => m.isCompleted).length} of{" "}
-          {bookMissions.length} completed
+          {currentBook.title} — {bookMissions.filter((m) => m.isCompleted).length} {t("app.of")}{" "}
+          {bookMissions.length} {t("app.completed")}
         </p>
       </motion.div>
 
@@ -96,7 +99,7 @@ export default function StudentMissions() {
                           : "bg-gold/15 text-gold-foreground"
                       }`}
                     >
-                      {mission.isCompleted ? "Earned" : "+"}{mission.xpReward} XP
+                      {mission.isCompleted ? t("app.earned") : "+"}{mission.xpReward} XP
                     </span>
                   </div>
 
@@ -109,11 +112,11 @@ export default function StudentMissions() {
                       {mission.type}
                     </Badge>
                     <span className="text-xs text-muted-foreground">
-                      Chapter {mission.chapter}
+                      {t("app.chapter")} {mission.chapter}
                     </span>
                     {isNext && (
                       <Badge className="text-xs bg-warm/15 text-warm-foreground border-0 ml-auto">
-                        Up Next
+                        {t("app.upNext")}
                       </Badge>
                     )}
                   </div>

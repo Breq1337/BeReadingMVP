@@ -4,8 +4,10 @@ import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Play, Pause, RotateCcw, BookOpen, Clock, Trophy, Flame } from "lucide-react";
 import { currentStudent, books } from "@/lib/mock-data";
+import { useLocale } from "@/lib/locale-context";
 
 export default function ReadingTimer() {
+  const { t } = useLocale();
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [sessionGoal] = useState(25 * 60); // 25 min default
@@ -35,10 +37,10 @@ export default function ReadingTimer() {
     <div className="p-6 lg:p-10 max-w-3xl mx-auto">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-3xl font-bold tracking-tight mb-2 text-center" style={{ fontFamily: "var(--font-heading)" }}>
-          Sessão de Leitura
+          {t("app.readingSession")}
         </h1>
         <p className="text-sm text-muted-foreground text-center mb-10">
-          Leia seu livro físico e use o timer para registrar seu tempo
+          {t("app.readingSessionDesc")}
         </p>
       </motion.div>
 
@@ -48,7 +50,7 @@ export default function ReadingTimer() {
         <div className="text-3xl">{currentBook.cover}</div>
         <div>
           <p className="text-sm font-semibold">{currentBook.title}</p>
-          <p className="text-xs text-muted-foreground">Capítulo {currentStudent.currentChapter} de {currentBook.totalChapters}</p>
+          <p className="text-xs text-muted-foreground">{t("app.chapter")} {currentStudent.currentChapter} {t("app.of")} {currentBook.totalChapters}</p>
         </div>
       </motion.div>
 
@@ -74,7 +76,7 @@ export default function ReadingTimer() {
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             <span className="text-5xl font-bold tracking-tight font-mono">{formatTime(seconds)}</span>
-            <span className="text-xs text-muted-foreground mt-1">meta: {Math.floor(sessionGoal / 60)} min</span>
+            <span className="text-xs text-muted-foreground mt-1">{t("app.goalMin")} {Math.floor(sessionGoal / 60)} {t("app.min")}</span>
           </div>
         </div>
       </motion.div>
@@ -106,17 +108,17 @@ export default function ReadingTimer() {
         <div className="bg-card rounded-2xl border border-border/60 p-4 text-center">
           <Clock className="w-5 h-5 text-warm mx-auto mb-2" />
           <div className="text-lg font-bold">{currentStudent.totalReadingMinutes}m</div>
-          <p className="text-[10px] text-muted-foreground">Total Acumulado</p>
+          <p className="text-[10px] text-muted-foreground">{t("app.totalAccumulated")}</p>
         </div>
         <div className="bg-card rounded-2xl border border-border/60 p-4 text-center">
           <Flame className="w-5 h-5 text-destructive mx-auto mb-2" />
           <div className="text-lg font-bold">{currentStudent.streak}d</div>
-          <p className="text-[10px] text-muted-foreground">Dias Seguidos</p>
+          <p className="text-[10px] text-muted-foreground">{t("app.streakDays")}</p>
         </div>
         <div className="bg-card rounded-2xl border border-border/60 p-4 text-center">
           <Trophy className="w-5 h-5 text-gold-foreground mx-auto mb-2" />
           <div className="text-lg font-bold">+{Math.floor(seconds / 60) * 2}</div>
-          <p className="text-[10px] text-muted-foreground">XP desta sessão</p>
+          <p className="text-[10px] text-muted-foreground">{t("app.xpThisSession")}</p>
         </div>
       </motion.div>
     </div>

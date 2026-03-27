@@ -21,7 +21,7 @@ export default function TeacherLibrary() {
           {t("app.bookLibrary")}
         </h1>
         <p className="text-sm text-muted-foreground">
-          Busque livros reais pela Open Library ou use os títulos da plataforma
+          {t("app.librarySubtitle")}
         </p>
       </motion.div>
 
@@ -33,7 +33,7 @@ export default function TeacherLibrary() {
         className="mb-10"
       >
         <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-          🌐 Buscar na Open Library
+          🌐 {t("app.searchOnOpenLibrary")}
         </h2>
         <BookSearch />
       </motion.div>
@@ -44,7 +44,7 @@ export default function TeacherLibrary() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
       >
-        <h2 className="text-lg font-semibold mb-4">Livros da Plataforma</h2>
+        <h2 className="text-lg font-semibold mb-4">{t("app.platformBooks")}</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {books.map((book, i) => (
             <motion.div

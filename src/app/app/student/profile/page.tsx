@@ -4,11 +4,14 @@ import { motion } from "framer-motion";
 import { currentStudent, allBadges } from "@/lib/mock-data";
 import { Progress } from "@/components/ui/progress";
 import { BookOpen, Flame, Star, Trophy, Zap } from "lucide-react";
+import { useLocale } from "@/lib/locale-context";
 
 const xpForNextLevel = (currentStudent.level + 1) * 200;
 const earnedBadgeIds = currentStudent.badges.map((b) => b.id);
 
 export default function StudentProfile() {
+  const { t } = useLocale();
+
   return (
     <div className="p-6 lg:p-10 max-w-4xl">
       <motion.div
@@ -18,7 +21,7 @@ export default function StudentProfile() {
         className="mb-8"
       >
         <h1 className="text-3xl font-bold tracking-tight mb-2" style={{ fontFamily: "var(--font-heading)" }}>
-          My Profile
+          {t("app.myProfile")}
         </h1>
       </motion.div>
 
@@ -41,35 +44,35 @@ export default function StudentProfile() {
               <Flame className="w-4 h-4" />
               <span className="text-xl font-bold">{currentStudent.streak}</span>
             </div>
-            <p className="text-[10px] text-muted-foreground">Streak</p>
+            <p className="text-[10px] text-muted-foreground">{t("app.streak")}</p>
           </div>
           <div>
             <div className="flex items-center justify-center gap-1 text-gold mb-1">
               <Zap className="w-4 h-4" />
               <span className="text-xl font-bold">{currentStudent.xp}</span>
             </div>
-            <p className="text-[10px] text-muted-foreground">XP</p>
+            <p className="text-[10px] text-muted-foreground">{t("app.xp")}</p>
           </div>
           <div>
             <div className="flex items-center justify-center gap-1 text-success mb-1">
               <Star className="w-4 h-4" />
               <span className="text-xl font-bold">{currentStudent.level}</span>
             </div>
-            <p className="text-[10px] text-muted-foreground">Level</p>
+            <p className="text-[10px] text-muted-foreground">{t("app.level")}</p>
           </div>
           <div>
             <div className="flex items-center justify-center gap-1 text-primary mb-1">
               <BookOpen className="w-4 h-4" />
               <span className="text-xl font-bold">{currentStudent.booksCompleted}</span>
             </div>
-            <p className="text-[10px] text-muted-foreground">Books</p>
+            <p className="text-[10px] text-muted-foreground">{t("app.books")}</p>
           </div>
         </div>
 
         <div className="mt-6 max-w-sm mx-auto">
           <div className="flex items-center justify-between text-xs mb-1.5">
-            <span>Level {currentStudent.level}</span>
-            <span className="text-muted-foreground">{currentStudent.xp} / {xpForNextLevel} XP</span>
+            <span>{t("app.level")} {currentStudent.level}</span>
+            <span className="text-muted-foreground">{currentStudent.xp} / {xpForNextLevel} {t("app.xp")}</span>
           </div>
           <Progress value={(currentStudent.xp / xpForNextLevel) * 100} className="h-2.5" />
         </div>
@@ -84,7 +87,7 @@ export default function StudentProfile() {
       >
         <h3 className="text-sm font-semibold flex items-center gap-2 mb-5">
           <Trophy className="w-4 h-4 text-warm" />
-          Badge Collection
+          {t("app.badgeCollection")}
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {allBadges.map((badge) => {
@@ -105,11 +108,11 @@ export default function StudentProfile() {
                   <p className="text-xs text-muted-foreground">{badge.description}</p>
                   {earnedData?.earnedAt && (
                     <p className="text-[10px] text-warm mt-0.5">
-                      Earned {earnedData.earnedAt}
+                      {t("app.earned")} {earnedData.earnedAt}
                     </p>
                   )}
                 </div>
-                {earned && <span className="text-success text-sm">✓</span>}
+                {earned && <span className="text-success text-sm">&#10003;</span>}
               </div>
             );
           })}

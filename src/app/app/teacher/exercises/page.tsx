@@ -10,8 +10,10 @@ import {
   ChevronDown, Star, ArrowLeft, Sparkles, X,
 } from "lucide-react";
 import Link from "next/link";
+import { useLocale } from "@/lib/locale-context";
 
 export default function TeacherExercises() {
+  const { t } = useLocale();
   const [expandedExercise, setExpandedExercise] = useState<string | null>("ex1");
   const [gradingStudent, setGradingStudent] = useState<string | null>(null);
   const [gradeScore, setGradeScore] = useState("");
@@ -29,15 +31,15 @@ export default function TeacherExercises() {
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between mb-8">
         <div>
           <Link href="/app/teacher" className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground mb-3">
-            <ArrowLeft className="w-3 h-3" /> Voltar ao Painel
+            <ArrowLeft className="w-3 h-3" /> {t("app.backToDashboard")}
           </Link>
           <h1 className="text-3xl font-bold tracking-tight" style={{ fontFamily: "var(--font-heading)" }}>
-            Exercícios & Avaliações
+            {t("app.exercisesAndAssessments")}
           </h1>
-          <p className="text-sm text-muted-foreground mt-1">Crie, envie e avalie exercícios</p>
+          <p className="text-sm text-muted-foreground mt-1">{t("app.createSendGrade")}</p>
         </div>
         <button onClick={() => setShowCreate(!showCreate)} className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90">
-          <Plus className="w-4 h-4" /> Novo Exercício
+          <Plus className="w-4 h-4" /> {t("app.newExercise")}
         </button>
       </motion.div>
 
@@ -48,7 +50,7 @@ export default function TeacherExercises() {
             className="bg-card rounded-2xl border border-border/60 p-6 mb-6 overflow-hidden">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold flex items-center gap-2">
-                <FileText className="w-5 h-5 text-primary" /> Criar Exercício
+                <FileText className="w-5 h-5 text-primary" /> {t("app.createExercise")}
               </h2>
               <button onClick={() => setShowCreate(false)} className="text-muted-foreground hover:text-foreground">
                 <X className="w-5 h-5" />
@@ -56,11 +58,11 @@ export default function TeacherExercises() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <div>
-                <label className="text-xs text-muted-foreground mb-1 block">Título</label>
+                <label className="text-xs text-muted-foreground mb-1 block">{t("app.title")}</label>
                 <input className="w-full px-3 py-2.5 rounded-xl border border-border/60 bg-secondary/30 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="Ex: Compreensão — Cap. 6-10" />
               </div>
               <div>
-                <label className="text-xs text-muted-foreground mb-1 block">Turma</label>
+                <label className="text-xs text-muted-foreground mb-1 block">{t("app.classSelect")}</label>
                 <select className="w-full px-3 py-2.5 rounded-xl border border-border/60 bg-secondary/30 text-sm">
                   <option>7A — Literatura</option>
                   <option>7B — Literatura</option>
@@ -68,45 +70,45 @@ export default function TeacherExercises() {
                 </select>
               </div>
               <div>
-                <label className="text-xs text-muted-foreground mb-1 block">Capítulo</label>
+                <label className="text-xs text-muted-foreground mb-1 block">{t("app.chapterSelect")}</label>
                 <input type="number" className="w-full px-3 py-2.5 rounded-xl border border-border/60 bg-secondary/30 text-sm" placeholder="10" />
               </div>
               <div>
-                <label className="text-xs text-muted-foreground mb-1 block">Data de Entrega</label>
+                <label className="text-xs text-muted-foreground mb-1 block">{t("app.dueDate")}</label>
                 <input type="date" className="w-full px-3 py-2.5 rounded-xl border border-border/60 bg-secondary/30 text-sm" />
               </div>
             </div>
 
             <div className="mb-4">
-              <label className="text-xs text-muted-foreground mb-2 block">Questões</label>
+              <label className="text-xs text-muted-foreground mb-2 block">{t("app.questions")}</label>
               <div className="space-y-3">
                 {[1, 2, 3].map((n) => (
                   <div key={n} className="bg-secondary/30 rounded-xl p-4">
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="text-xs font-medium text-muted-foreground">Questão {n}</span>
+                      <span className="text-xs font-medium text-muted-foreground">{t("app.questionN")} {n}</span>
                       <select className="text-xs px-2 py-1 rounded-lg border border-border/60 bg-card">
-                        <option>Múltipla Escolha</option>
-                        <option>Dissertativa</option>
-                        <option>Verdadeiro/Falso</option>
+                        <option>{t("app.multipleChoice")}</option>
+                        <option>{t("app.essay")}</option>
+                        <option>{t("app.trueFalse")}</option>
                       </select>
                       <input type="number" placeholder="Pontos" className="w-20 text-xs px-2 py-1 rounded-lg border border-border/60 bg-card" />
                     </div>
-                    <input className="w-full px-3 py-2 rounded-lg border border-border/60 bg-card text-sm" placeholder="Digite a pergunta..." />
+                    <input className="w-full px-3 py-2 rounded-lg border border-border/60 bg-card text-sm" placeholder={t("app.typeQuestion")} />
                   </div>
                 ))}
               </div>
-              <button className="mt-2 text-xs text-warm hover:underline">+ Adicionar questão</button>
+              <button className="mt-2 text-xs text-warm hover:underline">{t("app.addQuestion")}</button>
             </div>
 
             <div className="flex gap-2">
               <button className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90">
-                <Send className="w-4 h-4" /> Publicar Exercício
+                <Send className="w-4 h-4" /> {t("app.publishExercise")}
               </button>
               <button className="px-5 py-2.5 rounded-xl bg-secondary text-sm font-medium hover:bg-secondary/80">
-                Salvar Rascunho
+                {t("app.saveDraft")}
               </button>
               <button className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-warm/10 text-warm text-sm font-medium hover:bg-warm/20">
-                <Sparkles className="w-4 h-4" /> Gerar com IA
+                <Sparkles className="w-4 h-4" /> {t("app.generateWithAI")}
               </button>
             </div>
           </motion.div>
@@ -136,7 +138,7 @@ export default function TeacherExercises() {
                 <Badge variant="secondary" className={`text-[10px] ${
                   exercise.status === "published" ? "bg-success/10 text-success" : "bg-secondary"
                 }`}>
-                  {exercise.status === "published" ? "Publicado" : exercise.status === "draft" ? "Rascunho" : "Encerrado"}
+                  {exercise.status === "published" ? t("app.published") : exercise.status === "draft" ? t("app.draft") : t("app.closed")}
                 </Badge>
                 {pending > 0 && (
                   <Badge className="text-[10px] bg-warm/10 text-warm border-0">{pending} para corrigir</Badge>
@@ -154,11 +156,11 @@ export default function TeacherExercises() {
                     <div className="grid grid-cols-4 gap-3 mb-5">
                       <div className="bg-secondary/50 rounded-xl p-3 text-center">
                         <div className="text-lg font-bold">{exercise.questions.length}</div>
-                        <p className="text-[10px] text-muted-foreground">Questões</p>
+                        <p className="text-[10px] text-muted-foreground">{t("app.questions")}</p>
                       </div>
                       <div className="bg-secondary/50 rounded-xl p-3 text-center">
                         <div className="text-lg font-bold">{submitted}</div>
-                        <p className="text-[10px] text-muted-foreground">Entregas</p>
+                        <p className="text-[10px] text-muted-foreground">{t("app.submissions")}</p>
                       </div>
                       <div className="bg-secondary/50 rounded-xl p-3 text-center">
                         <div className="text-lg font-bold text-success">{graded}</div>
@@ -171,7 +173,7 @@ export default function TeacherExercises() {
                     </div>
 
                     {/* Submissions */}
-                    <h4 className="text-xs font-semibold mb-3">Entregas</h4>
+                    <h4 className="text-xs font-semibold mb-3">{t("app.submissions")}</h4>
                     <div className="space-y-2">
                       {exercise.submissions.map((sub) => (
                         <div key={sub.id} className="flex items-center gap-3 p-3 rounded-xl bg-secondary/30">
@@ -180,7 +182,7 @@ export default function TeacherExercises() {
                           </div>
                           <div className="flex-1">
                             <span className="text-sm font-medium">{sub.studentName}</span>
-                            <p className="text-[10px] text-muted-foreground">Entregue em {sub.submittedAt}</p>
+                            <p className="text-[10px] text-muted-foreground">{t("app.submittedAt")} {sub.submittedAt}</p>
                           </div>
 
                           {sub.status === "graded" ? (
@@ -220,7 +222,7 @@ export default function TeacherExercises() {
                           <div key={s.id} className="flex items-center gap-3 p-3 rounded-xl bg-secondary/10 opacity-60">
                             <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-xs font-bold shrink-0">{s.avatar}</div>
                             <span className="text-sm">{s.name}</span>
-                            <Badge variant="secondary" className="text-[10px] ml-auto">Não entregou</Badge>
+                            <Badge variant="secondary" className="text-[10px] ml-auto">{t("app.notSubmitted")}</Badge>
                           </div>
                         ))}
                     </div>

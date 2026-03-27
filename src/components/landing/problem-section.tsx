@@ -3,48 +3,16 @@
 import { motion } from "framer-motion";
 import { useLocale } from "@/lib/locale-context";
 import { AlertTriangle, Clock, Eye, BookX } from "lucide-react";
-
-// NÍVEL 2: CONSCIENTE DO PROBLEMA
-// Agora o visitante sabe que existe um problema. Vamos AGRAVAR a dor
-// mostrando que ele sente isso todo dia — e que o custo de não agir é real.
+import type { TranslationKey } from "@/lib/i18n";
 
 export function ProblemSection() {
-  const { locale } = useLocale();
-  const pt = locale === "pt";
+  const { t } = useLocale();
 
   const pains = [
-    {
-      icon: BookX,
-      role: pt ? "O aluno" : "The student",
-      pain: pt
-        ? "Lê por obrigação. Não se conecta com o livro. Entrega resumos copiados. Não vê sentido."
-        : "Reads out of obligation. Doesn't connect with the book. Copies summaries. Sees no point.",
-      stat: pt ? "82% dizem que 'não gostam de ler'" : "82% say they 'don't like reading'",
-    },
-    {
-      icon: Clock,
-      role: pt ? "O professor" : "The teacher",
-      pain: pt
-        ? "Gasta horas corrigindo fichas de leitura genéricas. Não sabe quem realmente leu. Sente que está falando sozinho."
-        : "Spends hours grading generic reading sheets. Doesn't know who actually read. Feels like talking to walls.",
-      stat: pt ? "4h/semana em correção manual" : "4h/week on manual grading",
-    },
-    {
-      icon: Eye,
-      role: pt ? "A família" : "The family",
-      pain: pt
-        ? "Não sabe o que o filho está lendo. Descobre que não leu só na prova. Quer ajudar mas não sabe como."
-        : "Doesn't know what their child is reading. Only discovers they didn't read at test time. Wants to help but doesn't know how.",
-      stat: pt ? "91% querem mais visibilidade" : "91% want more visibility",
-    },
-    {
-      icon: AlertTriangle,
-      role: pt ? "A escola" : "The school",
-      pain: pt
-        ? "Investe em programa de leitura mas não tem métricas. Não consegue provar impacto para os pais. Perde alunos para escolas com propostas mais inovadoras."
-        : "Invests in reading programs but has no metrics. Can't prove impact to parents. Loses students to schools with more innovative proposals.",
-      stat: pt ? "0 métricas de engajamento" : "0 engagement metrics",
-    },
+    { icon: BookX, roleKey: "problem.student.role" as TranslationKey, painKey: "problem.student.pain" as TranslationKey, statKey: "problem.student.stat" as TranslationKey },
+    { icon: Clock, roleKey: "problem.teacher.role" as TranslationKey, painKey: "problem.teacher.pain" as TranslationKey, statKey: "problem.teacher.stat" as TranslationKey },
+    { icon: Eye, roleKey: "problem.family.role" as TranslationKey, painKey: "problem.family.pain" as TranslationKey, statKey: "problem.family.stat" as TranslationKey },
+    { icon: AlertTriangle, roleKey: "problem.school.role" as TranslationKey, painKey: "problem.school.pain" as TranslationKey, statKey: "problem.school.stat" as TranslationKey },
   ];
 
   return (
@@ -58,37 +26,25 @@ export function ProblemSection() {
           className="text-center mb-16 md:mb-20"
         >
           <p className="text-sm font-medium text-destructive/80 uppercase tracking-wider mb-4">
-            {pt ? "O problema real" : "The real problem"}
+            {t("problem.label")}
           </p>
           <h2
             className="text-3xl md:text-5xl font-bold tracking-tight mb-6 text-balance"
             style={{ fontFamily: "var(--font-heading)" }}
           >
-            {pt ? (
-              <>
-                Todos sofrem com a leitura.
-                <br />
-                <span className="text-muted-foreground">Ninguém fala sobre isso.</span>
-              </>
-            ) : (
-              <>
-                Everyone struggles with reading.
-                <br />
-                <span className="text-muted-foreground">Nobody talks about it.</span>
-              </>
-            )}
+            {t("problem.title1")}
+            <br />
+            <span className="text-muted-foreground">{t("problem.title2")}</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            {pt
-              ? "O ciclo é sempre o mesmo: a escola manda ler, o aluno finge que leu, o professor não tem como verificar, e a família só descobre quando a nota sai."
-              : "The cycle is always the same: the school assigns reading, the student pretends they read, the teacher can't verify, and the family only finds out when grades come out."}
+            {t("problem.subtitle")}
           </p>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {pains.map((pain, i) => (
             <motion.div
-              key={pain.role}
+              key={pain.roleKey}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -100,13 +56,13 @@ export function ProblemSection() {
                   <pain.icon className="w-5 h-5 text-destructive/70" />
                 </div>
                 <div>
-                  <h3 className="text-base font-semibold mb-2">{pain.role}</h3>
+                  <h3 className="text-base font-semibold mb-2">{t(pain.roleKey)}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed mb-3">
-                    {pain.pain}
+                    {t(pain.painKey)}
                   </p>
                   <div className="inline-flex items-center gap-1.5 text-xs font-medium text-destructive/70 bg-destructive/8 px-3 py-1.5 rounded-full">
                     <span className="w-1.5 h-1.5 rounded-full bg-destructive/60" />
-                    {pain.stat}
+                    {t(pain.statKey)}
                   </div>
                 </div>
               </div>

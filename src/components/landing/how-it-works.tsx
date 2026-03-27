@@ -46,7 +46,7 @@ export function HowItWorks() {
               )}
               <div className="text-6xl mb-6">{step.visual}</div>
               <div className="text-xs font-mono text-warm mb-3 uppercase tracking-widest">
-                Passo {step.number}
+                {t("how.step")} {step.number}
               </div>
               <h3 className="text-xl font-semibold mb-3">{step.title}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed max-w-xs mx-auto">{step.description}</p>

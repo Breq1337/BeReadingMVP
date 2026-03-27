@@ -4,26 +4,12 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { useLocale } from "@/lib/locale-context";
-
-// NÍVEL 5 (continuação): EMPURRÃO FINAL
-// Última chance de converter. Recapitula o valor, remove a última objeção,
-// e cria senso de urgência com vagas limitadas para o piloto.
+import type { TranslationKey } from "@/lib/i18n";
 
 export function CTASection() {
-  const { locale } = useLocale();
-  const pt = locale === "pt";
+  const { t } = useLocale();
 
-  const bullets = pt
-    ? [
-        "Setup em menos de 1 semana",
-        "Sem cartão de crédito para o piloto",
-        "Suporte completo de onboarding",
-      ]
-    : [
-        "Setup in less than 1 week",
-        "No credit card for the pilot",
-        "Full onboarding support",
-      ];
+  const bulletKeys: TranslationKey[] = ["cta2.bullet1", "cta2.bullet2", "cta2.bullet3"];
 
   return (
     <section className="py-24 md:py-32">
@@ -47,45 +33,28 @@ export function CTASection() {
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-warm/20 border border-warm/30 text-sm text-primary-foreground/90 mb-8"
             >
               <span className="w-2 h-2 rounded-full bg-warm animate-pulse" />
-              {pt
-                ? "Vagas limitadas para piloto gratuito em 2026"
-                : "Limited spots for free pilot in 2026"}
+              {t("cta2.badge")}
             </motion.div>
 
             <h2
               className="text-3xl md:text-5xl font-bold text-primary-foreground tracking-tight mb-6"
               style={{ fontFamily: "var(--font-heading)" }}
             >
-              {pt ? (
-                <>
-                  Seus alunos vão ler o próximo capítulo.
-                  <br />
-                  <span className="text-warm">Por vontade própria.</span>
-                </>
-              ) : (
-                <>
-                  Your students will read the next chapter.
-                  <br />
-                  <span className="text-warm">By choice.</span>
-                </>
-              )}
+              {t("cta2.title1")}
+              <br />
+              <span className="text-warm">{t("cta2.titleHighlight")}</span>
             </h2>
 
             <p className="text-lg text-primary-foreground/70 max-w-xl mx-auto mb-8">
-              {pt
-                ? "Junte-se às escolas que estão transformando a leitura obrigatória em paixão. Comece hoje — é grátis."
-                : "Join the schools transforming mandatory reading into passion. Start today — it's free."}
+              {t("cta2.subtitle")}
             </p>
 
             {/* Quick bullets */}
             <div className="flex flex-wrap items-center justify-center gap-4 mb-10">
-              {bullets.map((bullet) => (
-                <div
-                  key={bullet}
-                  className="flex items-center gap-2 text-sm text-primary-foreground/80"
-                >
+              {bulletKeys.map((key) => (
+                <div key={key} className="flex items-center gap-2 text-sm text-primary-foreground/80">
                   <CheckCircle2 className="w-4 h-4 text-warm" />
-                  {bullet}
+                  {t(key)}
                 </div>
               ))}
             </div>
@@ -94,14 +63,12 @@ export function CTASection() {
               href="/app"
               className="group inline-flex items-center gap-2 bg-primary-foreground text-primary px-8 py-4 rounded-2xl text-base font-semibold hover:opacity-90 transition-all hover:gap-3"
             >
-              {pt ? "Começar Piloto Gratuito" : "Start Free Pilot"}
+              {t("cta2.button")}
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
 
             <p className="text-xs text-primary-foreground/50 mt-4">
-              {pt
-                ? "Sem cartão. Sem contrato. 30 dias grátis com todas as funcionalidades."
-                : "No card. No contract. 30 days free with all features."}
+              {t("cta2.note")}
             </p>
           </div>
         </motion.div>

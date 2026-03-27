@@ -3,15 +3,18 @@
 import { motion } from "framer-motion";
 import { familyData } from "@/lib/mock-data";
 import { BookOpen } from "lucide-react";
+import { useLocale } from "@/lib/locale-context";
 
 export default function FamilyActivity() {
+  const { t } = useLocale();
+
   return (
     <div className="p-6 lg:p-10 max-w-4xl">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight mb-2" style={{ fontFamily: "var(--font-heading)" }}>
-          Activity Timeline
+          {t("app.activityTimeline")}
         </h1>
-        <p className="text-sm text-muted-foreground">{familyData.studentName}&apos;s recent reading activity</p>
+        <p className="text-sm text-muted-foreground">{familyData.studentName}&apos;s {t("app.recentReadingActivity")}</p>
       </motion.div>
 
       <div className="space-y-4">
@@ -34,7 +37,7 @@ export default function FamilyActivity() {
             <div className="bg-card rounded-2xl border border-border/60 p-5 flex-1 mb-2">
               <p className="text-sm font-medium mb-1">{activity.action}</p>
               <p className="text-xs text-muted-foreground">
-                {activity.book} · Chapter {activity.chapter}
+                {activity.book} · {t("app.chapterLabel")} {activity.chapter}
               </p>
               <p className="text-xs text-muted-foreground mt-1">{activity.date}</p>
             </div>
